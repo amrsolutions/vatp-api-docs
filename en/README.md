@@ -13,6 +13,8 @@ VatPortal API enables third-party ERP systems to programmatically interact with 
 - [**Quick Start**](./quickstart.md) - Get up and running in 5 minutes
 - [**Authentication**](./authentication.md) - Setup credentials and tokens
 - [**Import & Upload Invoices**](./import-upload-invoices.md) - Main endpoint reference
+- [**Download from E-taxes**](./download-from-etaxes.md) - Download invoices from e-taxes.gov.az
+- [**Delete E-taxes Invoices**](./delete-etaxes-invoices.md) - Delete invoices from portal and e-taxes
 - [**Error Codes**](./error-codes.md) - Troubleshooting guide
 - [**Examples**](./examples.md) - Real-world use cases
 

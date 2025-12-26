@@ -13,6 +13,8 @@ VatPortal API üçüncü tərəf ERP sistemlərinə Azərbaycanın e-taxes.gov.a
 - [**Sürətli Başlanğıc**](./quickstart.md) - 5 dəqiqədə işə başlayın
 - [**Autentifikasiya**](./authentication.md) - İcazə məlumatlarını və tokenləri quraşdırın
 - [**Qaimələri İdxal və Yükləmək**](./import-upload-invoices.md) - Əsas endpoint sənədləşməsi
+- [**E-taxes-dan Endirmə**](./download-from-etaxes.md) - e-taxes.gov.az-dan qaimələri endirin
+- [**E-taxes Qaimələrini Silmək**](./delete-etaxes-invoices.md) - Portal və e-taxes-dan qaimələri silin
 - [**Xəta Kodları**](./error-codes.md) - Problemlərin həlli üzrə bələdçi
 - [**Nümunələr**](./examples.md) - Real istifadə halları
 
