@@ -1,168 +1,108 @@
-# VatPortal API Sənədləşməsi v8.0
+# VatPortal API Sənədləşmə Bələdçisi
 
-**Yaradılıb:** 26 Dekabr 2025
-**Format:** Markdown
-**Mənbə:** PDF versiya 6.0/8.0-dan yenidən strukturlaşdırılıb
-
----
-
-## 📦 Nələr Daxildir
-
-Bu sənədləşmə paketi bunları ehtiva edir:
-
-```
-vatportal-api-docs/
-├── README.md                    # Əsas giriş nöqtəsi
-├── quickstart.md                # 5 dəqiqəlik başlanğıc bələdçisi
-├── authentication.md            # Tam autentifikasiya bələdçisi
-├── CHANGELOG.md                 # Versiya tarixçəsi
-├── endpoints/
-│   └── import-upload-invoices.md  # Ətraflı endpoint sənədləri
-├── reference/
-│   ├── error-codes.md          # Tam xəta arayışı
-│   └── invoice-types.md        # Növlər və statuslar
-└── examples/
-    └── README.md               # Real kod nümunələri
-```
-
-## 🎯 PDF-ə Nisbətən Əsas Təkmilləşdirmələr
-
-### ✅ Həll Edilmiş Problemlər
-- **Versiya Uyğunluğu** - Bütün istinadlar v8.0 deyir (6.0 deyil)
-- **Tək Dil** - Hər yerdə Azərbaycan (cədvəllərdən İngilis dili silindi)
-- **Strukturlaşdırılmış Naviqasiya** - Aydın iyerarxiya və keçidlər
-- **İnteqrasiya Edilmiş Nümunələr** - Hər endpoint ilə kod nümunələri
-- **Sürətli Başlanğıc** - 5 dəqiqədə işə başlayın
-- **Axtarıla Bilən** - Ctrl+F, Google indeksləməsi ilə işləyir
-- **Kopyalana Bilən** - Bütün kod nümunələri istifadəyə hazırdır
-
-### ✨ Yeni Xüsusiyyətlər
-- **Sürətli Başlanğıc Bələdçisi** - Sürətli qoşulma
-- **Konsolidasiya Edilmiş Autentifikasiya** - Hər iki metod + token yeniləməsi bir yerdə
-- **Xəta Kodlarının Həlləri** - Yalnız kodlar deyil, həm də onları necə həll etmək
-- **Real Nümunələr** - Kod ilə tam iş axınları
-- **Versiya Tarixçəsi** - Miqrasiya bələdçiləri ilə aydın dəyişikliklər jurnalı
-- **Tərtibatçı Fokuslu** - Texniki auditoriya üçün yazılıb
-
-## 🚀 Bu Sənədləşmədən Necə İstifadə Etmək
-
-### Seçim 1: Lokal Oxuyun (Markdown Görüntüləyici)
-1. `README.md`-ni VS Code, Obsidian və ya istənilən markdown görüntüləyicidə açın
-2. Səhifələr arasında naviqasiya etmək üçün keçidlərə klikləyin
-3. Kod nümunələrini birbaşa kopyalayın
-
-### Seçim 2: GitHub Pages-də Yerləşdirin (Tövsiyə olunur)
-```bash
-# 1. GitHub reposu yaradın
-gh repo create vatportal-api-docs --public
-
-# 2. Sənədləşməni push edin
-cd vatportal-api-docs
-git init
-git add .
-git commit -m "İlkin sənədləşmə v8.0"
-git remote add origin https://github.com/your-org/vatportal-api-docs.git
-git push -u origin main
-
-# 3. GitHub Pages-i aktivləşdirin
-# Repo Settings → Pages → Mənbə: main branch keçin
-# Sənədləriniz buradadır: https://your-org.github.io/vatportal-api-docs/
-```
-
-### Seçim 3: Statik Sayt Generatorundan İstifadə Edin
-
-**MkDocs istifadə edərək (Python):**
-```bash
-pip install mkdocs mkdocs-material
-
-# mkdocs.yml yaradın
-cat > mkdocs.yml << EOF
-site_name: VatPortal API Sənədləşməsi
-theme:
-  name: material
-  palette:
-    primary: blue
-nav:
-  - Ana səhifə: README.md
-  - Sürətli Başlanğıc: quickstart.md
-  - Autentifikasiya: authentication.md
-  - Endpointlər:
-    - İdxal və Yükləmə: endpoints/import-upload-invoices.md
-  - Arayış:
-    - Xəta Kodları: reference/error-codes.md
-    - Qaimə Növləri: reference/invoice-types.md
-  - Nümunələr: examples/README.md
-  - Dəyişikliklər Jurnalı: CHANGELOG.md
-EOF
-
-# Lokal olaraq göstərin
-mkdocs serve
-# Ziyarət edin: http://localhost:8000
-
-# Yerləşdirmə üçün quraşdırın
-mkdocs build
-```
-
-## 🔄 Sənədləşməni Yenilənmiş Saxlamaq
-
-### API Dəyişdikdə
-1. Müvafiq `.md` faylını redaktə edin
-2. `CHANGELOG.md`-ni yeniləyin
-3. Bütün istinadlarda versiyanı yeniləyin
-4. Aydın mesajla commit edin
-
-### Versiya Yüksəltmə Yoxlama Siyahısı
-```bash
-# 1. Versiya istinadlarını yeniləyin
-grep -r "Versiya.*8.0" . --include="*.md"
-# Yeni versiya ilə əvəz edin
-
-# 2. Dəyişikliklər jurnalı girişi əlavə edin
-# CHANGELOG.md redaktə edin
-
-# 3. Commit
-git add .
-git commit -m "docs: v9.0-a yüksəlt"
-git tag v9.0
-git push --tags
-```
-
-## 💡 Tövsiyələr
-
-### ✅ EDİN
-- **Onlayn yerləşdirin** - GitHub Pages və ya GitBook istifadə edin
-- **Axtarışdan istifadə edin** - Statik sayt generatorları axtarış əlavə edir
-- **Naviqasiya əlavə edin** - Məzmun cədvəlindən istifadə edin
-- **Versiya nəzarəti** - Git-də saxlayın
-- **Töhfələri qəbul edin** - Tərtibatçılara sənədləri təkmilləşdirməyə icazə verin
-
-### ❌ ETMƏYİN
-- **Yalnız PDF qalın** - Saxlamaq və axtarmaq çətindir
-- **Nümunələri buraxmayın** - Tərtibatçılara işləyən kod lazımdır
-- **Dəyişikliklər jurnalını unutmayın** - Dəyişənləri izləyin
-- **Rəyi nəzərə almayın** - İstifadəçilər səhvləri tapır
-
-## 📖 Növbəti Addımlar
-
-1. **Sənədləri nəzərdən keçirin** - Oxuyun və dəqiqliyi yoxlayın
-2. **Hostinq seçin** - Yuxarıdakı seçimlərdən birini seçin
-3. **Komanda ilə paylaşın** - Tərtibatçılardan rəy alın
-4. **Çatışmayan endpointləri əlavə edin** - Qalan endpointləri sənədləşdirin
-5. **SDK-lar yaradın** - Dilə xas sarğılar quraşdırın
-6. **Rəy toplayın** - İstifadəçi ehtiyaclarına əsasən təkrarlayın
-
-## 📞 Dəstək
-
-- **Sənədləşmə Problemləri:** GitHub problemi yaradın
-- **API Sualları:** support@amrsolutions.az
-- **Xüsusiyyət Tələbləri:** Hesab meneceri ilə əlaqə saxlayın
-
-## 📝 Lisenziya
-
-Sənədləşmə: CC BY 4.0
-API: Xüsusi (AMR Solutions)
+**Versiya:** 8.0
+**Son Yenilənmə:** 26 Dekabr 2025
 
 ---
 
-**Tərtibatçılar üçün ❤️ ilə hazırlanıb**
-**AMR Solutions - VatPortal API Komandası**
+## 📖 VatPortal API Sənədləşməsinə Xoş Gəlmisiniz
+
+Bu əhatəli bələdçi sizə ERP sisteminizi VatPortal API vasitəsilə Azərbaycanın e-taxes.gov.az sistemi ilə inteqrasiya etməyə kömək edəcək.
+
+## 🌍 Mövcud Dillər
+
+Bu sənədləşmə iki dildə mövcuddur:
+
+- **English** - [İngilis Sənədləşməsinə baxın](../en/README.md)
+- **Azərbaycan** - [Azərbaycan Sənədləşməsinə baxın](./README.md)
+
+İstənilən vaxt əsas səhifədən dillər arasında keçid edə bilərsiniz.
+
+## 📚 Sənədləşmə Strukturu
+
+Sənədləşməmiz sizə sürətli başlamağa və lazımı məlumatı tapmağa kömək etmək üçün təşkil edilib:
+
+### Başlanğıc
+1. **[Sürətli Başlanğıc Bələdçisi](./quickstart.md)** - 5 dəqiqədə işə başlayın
+2. **[Autentifikasiya](./authentication.md)** - İcazə məlumatlarınızı və tokenlərinizi quraşdırın
+3. **[Nümunələr](./examples.md)** - Real kod nümunələri
+
+### API Arayış
+- **[Qaimələri İdxal və Yükləmək](./import-upload-invoices.md)** - Əsas endpoint sənədləşməsi
+- **[Xəta Kodları](./error-codes.md)** - Həll yolları ilə tam xəta arayışı
+- **[Qaimə Növləri](./invoice-types.md)** - Bütün dəstəklənən qaimə növləri və statusları
+
+### Əlavə Resurslar
+- **[Dəyişikliklər Jurnalı](./CHANGELOG.md)** - Versiya tarixçəsi və yeniləmələr
+
+## 🚀 Tövsiyə Olunan Öyrənmə Yolu
+
+### Yeni Tərtibatçılar Üçün
+1. [Sürətli Başlanğıc Bələdçisi](./quickstart.md) ilə başlayın
+2. [Autentifikasiya](./authentication.md) metodlarını nəzərdən keçirin
+3. [Nümunələri](./examples.md) sınayın
+4. Problemlərin həlli zamanı [Xəta Kodları](./error-codes.md)-na müraciət edin
+
+### İnteqrasiya Komandaları Üçün
+1. Quraşdırma üçün [Autentifikasiya](./authentication.md) oxuyun
+2. [Qaimələri İdxal və Yükləmək](./import-upload-invoices.md) endpointini öyrənin
+3. Biznes məntiqiüçün [Qaimə Növləri](./invoice-types.md) nəzərdən keçirin
+4. Tətbiq nümunələri üçün [Nümunələrdən](./examples.md) istifadə edin
+
+## 💡 Ən Yaxşı Təcrübələr
+
+### Təhlükəsizlik
+- Həmişə **token əsaslı autentifikasiya** istifadə edin (istifadəçi adı/parol əvəzinə tövsiyə olunur)
+- Tokenləri mühit dəyişənlərində təhlükəsiz saxlayın
+- Heç vaxt icazə məlumatlarını versiya nəzarətinə commit etməyin
+- Bütün API sorğuları üçün HTTPS istifadə edin
+- Tokenləri müntəzəm dəyişdirin (minimum 90 gündə bir)
+
+### Xəta İdarəetməsi
+- API cavablarında həmişə `err_code` yoxlayın
+- Şəbəkə xətaları üçün təkrar cəhd məntiqini tətbiq edin
+- Debaq üçün tam kontekstlə xətaları qeyd edin
+- API-yə göndərməzdən əvvəl qaimə məlumatlarını yoxlayın
+
+### Performans
+- Mümkün olduqda toplu əməliyyatlardan istifadə edin
+- Düzgün timeout idarəetməsini tətbiq edin
+- Uyğun olduqda cavabları keşləyin
+- API çağırış sürətlərini izləyin
+
+## 🆘 Kömək Almaq
+
+### Sənədləşmə Problemləri
+Xətalar tapsanız və ya bu sənədləşməni təkmilləşdirmək üçün təklifləriniz varsa:
+- Bizimlə əlaqə saxlayın: **support@amr.az**
+
+### Texniki Dəstək
+API inteqrasiyası dəstəyi üçün:
+- **Email:** support@amr.az
+- **Cavab Müddəti:** İş günlərində 24 saat ərzində
+
+### Xüsusiyyət Tələbləri
+Yeni API xüsusiyyətləri üçün ideyalarınız var? Hesab meneceri ilə əlaqə saxlayın və ya bizə email göndərin.
+
+## 📄 İstifadə Şərtləri
+
+Bu API sənədləşməsi qeydiyyatdan keçmiş VatPortal abunəçiləri üçün təmin edilir. API-nin istifadəsi VatPortal abunəlik müqavilənizdə təyin edilmiş şərtlərə tabedir.
+
+## 🔔 Yenilənmiş Qalmaq
+
+### Versiya Yeniləmələri
+[Dəyişikliklər Jurnalı](./CHANGELOG.md)-nı müntəzəm yoxlayın:
+- Yeni xüsusiyyətlər və endpointlər
+- Pozucu dəyişikliklər
+- Təhlükəsizlik yeniləmələri
+- Səhv düzəlişləri
+
+### Cari Versiya
+**API Versiyası:** 8.0
+**Sənədləşmə Versiyası:** 8.0.0
+
+---
+
+**Köməyə ehtiyacınız var?** Bizimlə support@amr.az ünvanında əlaqə saxlayın
+
+**AMR Solutions tərəfindən hazırlanıb**

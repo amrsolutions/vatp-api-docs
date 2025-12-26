@@ -1,230 +1,108 @@
-# VatPortal API Documentation v8.0
+# VatPortal API Documentation Guide
 
-**Created:** December 26, 2025  
-**Format:** Markdown  
-**Source:** Restructured from PDF version 6.0/8.0
+**Version:** 8.0
+**Last Updated:** December 26, 2025
 
 ---
 
-## 📦 What's Included
+## 📖 Welcome to VatPortal API Documentation
 
-This documentation package contains:
+This comprehensive guide will help you integrate your ERP system with Azerbaijan's e-taxes.gov.az through the VatPortal API.
 
-```
-vatportal-api-docs/
-├── README.md                    # Main entry point
-├── quickstart.md                # 5-minute getting started guide
-├── authentication.md            # Complete auth guide
-├── CHANGELOG.md                 # Version history
-├── endpoints/
-│   └── import-upload-invoices.md  # Detailed endpoint docs
-├── reference/
-│   ├── error-codes.md          # Complete error reference
-│   └── invoice-types.md        # Types and statuses
-└── examples/
-    └── README.md               # Real-world code examples
-```
+## 🌍 Available Languages
 
-## 🎯 Key Improvements Over PDF
+This documentation is available in two languages:
 
-### ✅ Fixed Issues
-- **Version Consistency** - All references say v8.0 (not 6.0)
-- **Single Language** - English throughout (Azerbaijani removed from tables)
-- **Structured Navigation** - Clear hierarchy and links
-- **Integrated Examples** - Code samples with each endpoint
-- **Quick Start** - Get running in 5 minutes
-- **Searchable** - Works with Ctrl+F, Google indexing
-- **Copy-Pasteable** - All code examples ready to use
+- **English** - [Browse English Documentation](./README.md)
+- **Azərbaycan** - [Azərbaycan Sənədləşməsinə baxın](../az/README.md)
 
-### ✨ New Features
-- **Quick Start Guide** - Fast onboarding
-- **Authentication Consolidated** - Both methods + token renewal in one place
-- **Error Code Solutions** - Not just codes, but how to fix them
-- **Real-World Examples** - Complete workflows with code
-- **Version History** - Clear changelog with migration guides
-- **Developer-Focused** - Written for technical audience
-
-## 🚀 How to Use This Documentation
-
-### Option 1: Read Locally (Markdown Viewer)
-1. Open `README.md` in VS Code, Obsidian, or any markdown viewer
-2. Click links to navigate between pages
-3. Copy code examples directly
-
-### Option 2: Host on GitHub Pages (Recommended)
-```bash
-# 1. Create GitHub repo
-gh repo create vatportal-api-docs --public
-
-# 2. Push documentation
-cd vatportal-api-docs
-git init
-git add .
-git commit -m "Initial documentation v8.0"
-git remote add origin https://github.com/your-org/vatportal-api-docs.git
-git push -u origin main
-
-# 3. Enable GitHub Pages
-# Go to repo Settings → Pages → Source: main branch
-# Your docs will be at: https://your-org.github.io/vatportal-api-docs/
-```
-
-### Option 3: Use Static Site Generator
-
-**Using MkDocs (Python):**
-```bash
-pip install mkdocs mkdocs-material
-
-# Create mkdocs.yml
-cat > mkdocs.yml << EOF
-site_name: VatPortal API Documentation
-theme:
-  name: material
-  palette:
-    primary: blue
-nav:
-  - Home: README.md
-  - Quick Start: quickstart.md
-  - Authentication: authentication.md
-  - Endpoints:
-    - Import & Upload: endpoints/import-upload-invoices.md
-  - Reference:
-    - Error Codes: reference/error-codes.md
-    - Invoice Types: reference/invoice-types.md
-  - Examples: examples/README.md
-  - Changelog: CHANGELOG.md
-EOF
-
-# Serve locally
-mkdocs serve
-# Visit: http://localhost:8000
-
-# Build for deployment
-mkdocs build
-```
-
-**Using Docusaurus (JavaScript):**
-```bash
-npx create-docusaurus@latest vatportal-docs classic
-# Copy all .md files to docs/ folder
-npm start
-```
-
-**Using GitBook:**
-1. Sign up at gitbook.com
-2. Import from GitHub
-3. Instant beautiful docs
-
-### Option 4: Convert Back to PDF (If Needed)
-```bash
-# Using pandoc
-pandoc README.md -o vatportal-api-v8.pdf
-
-# With TOC and styling
-pandoc README.md quickstart.md authentication.md \
-  --toc --toc-depth=2 \
-  --css=style.css \
-  -o vatportal-api-v8.pdf
-```
+You can switch between languages at any time from the main page.
 
 ## 📚 Documentation Structure
 
+Our documentation is organized to help you get started quickly and find what you need:
+
+### Getting Started
+1. **[Quick Start Guide](./quickstart.md)** - Get up and running in 5 minutes
+2. **[Authentication](./authentication.md)** - Set up your credentials and tokens
+3. **[Examples](./examples.md)** - Real-world code samples
+
+### API Reference
+- **[Import & Upload Invoices](./import-upload-invoices.md)** - Main endpoint documentation
+- **[Error Codes](./error-codes.md)** - Complete error reference with solutions
+- **[Invoice Types](./invoice-types.md)** - All supported invoice types and statuses
+
+### Additional Resources
+- **[Changelog](./CHANGELOG.md)** - Version history and updates
+
+## 🚀 Recommended Learning Path
+
 ### For New Developers
-1. Start with [README.md](README.md) - Overview
-2. Follow [quickstart.md](quickstart.md) - Get running fast
-3. Read [authentication.md](authentication.md) - Set up auth
-4. Check [examples](examples/) - See real code
+1. Start with [Quick Start Guide](./quickstart.md)
+2. Review [Authentication](./authentication.md) methods
+3. Try the [Examples](./examples.md)
+4. Refer to [Error Codes](./error-codes.md) when troubleshooting
 
-### For Integration
-1. [authentication.md](authentication.md) - Setup
-2. [endpoints/import-upload-invoices.md](endpoints/import-upload-invoices.md) - Main endpoint
-3. [reference/error-codes.md](reference/error-codes.md) - Error handling
-4. [examples](examples/) - Copy working code
+### For Integration Teams
+1. Read [Authentication](./authentication.md) for setup
+2. Study [Import & Upload Invoices](./import-upload-invoices.md) endpoint
+3. Review [Invoice Types](./invoice-types.md) for business logic
+4. Use [Examples](./examples.md) for implementation patterns
 
-### For Troubleshooting
-1. [reference/error-codes.md](reference/error-codes.md) - Find your error
-2. [examples](examples/) - Check working examples
-3. [CHANGELOG.md](CHANGELOG.md) - See if version related
+## 💡 Best Practices
 
-## 🔄 Keeping Documentation Updated
+### Security
+- Always use **token-based authentication** (recommended over username/password)
+- Store tokens securely in environment variables
+- Never commit credentials to version control
+- Use HTTPS for all API requests
+- Rotate tokens regularly (every 90 days minimum)
 
-### When API Changes
-1. Edit relevant `.md` file
-2. Update `CHANGELOG.md`
-3. Bump version in all references
-4. Commit with clear message
+### Error Handling
+- Always check `err_code` in API responses
+- Implement retry logic for network errors
+- Log errors with full context for debugging
+- Validate invoice data before sending to API
 
-### Version Bump Checklist
-```bash
-# 1. Update version references
-grep -r "Version.*8.0" . --include="*.md"
-# Replace with new version
+### Performance
+- Use batch operations when possible
+- Implement proper timeout handling
+- Cache responses when appropriate
+- Monitor API call rates
 
-# 2. Add changelog entry
-# Edit CHANGELOG.md
+## 🆘 Getting Help
 
-# 3. Commit
-git add .
-git commit -m "docs: bump to v9.0"
-git tag v9.0
-git push --tags
-```
+### Documentation Issues
+If you find errors or have suggestions for improving this documentation:
+- Contact us at: **support@amr.az**
 
-## 💡 Recommendations
+### Technical Support
+For API integration support:
+- **Email:** support@amr.az
+- **Response Time:** Within 24 hours on business days
 
-### ✅ DO
-- **Host online** - Use GitHub Pages or GitBook
-- **Use search** - Static site generators add search
-- **Add navigation** - Use table of contents
-- **Version control** - Keep in git
-- **Accept contributions** - Let developers improve docs
+### Feature Requests
+Have ideas for new API features? Contact your account manager or email us.
 
-### ❌ DON'T
-- **Stay PDF-only** - Hard to maintain and search
-- **Skip examples** - Developers need working code
-- **Forget changelog** - Track what changed
-- **Ignore feedback** - Users find the bugs
+## 📄 Terms of Use
 
-## 🌐 Hosting Comparison
+This API documentation is provided for registered VatPortal subscribers. Usage of the API is subject to your VatPortal subscription agreement.
 
-| Platform | Cost | Setup | Features | Best For |
-|----------|------|-------|----------|----------|
-| **GitHub Pages** | Free | Easy | Basic, Fast | Public APIs |
-| **GitBook** | Free tier | Easiest | Beautiful, Search | Best UX |
-| **MkDocs** | Free hosting | Medium | Customizable | Full control |
-| **ReadTheDocs** | Free | Easy | Versioning | Open source |
-| **Docusaurus** | Free hosting | Medium | Modern, React | Large docs |
+## 🔔 Staying Updated
 
-## 📖 Next Steps
+### Version Updates
+Check the [Changelog](./CHANGELOG.md) regularly for:
+- New features and endpoints
+- Breaking changes
+- Security updates
+- Bug fixes
 
-1. **Review the docs** - Read through and verify accuracy
-2. **Choose hosting** - Pick from options above
-3. **Share with team** - Get feedback from developers
-4. **Add missing endpoints** - Document remaining endpoints
-5. **Create SDKs** - Build language-specific wrappers
-6. **Gather feedback** - Iterate based on user needs
-
-## 🤝 Contributing
-
-Want to improve these docs?
-
-1. Fork the repository
-2. Make your changes
-3. Submit pull request
-4. Get reviewed and merged
-
-## 📞 Support
-
-- **Documentation Issues:** Create GitHub issue
-- **API Questions:** support@amrsolutions.az
-- **Feature Requests:** Contact account manager
-
-## 📝 License
-
-Documentation: CC BY 4.0  
-API: Proprietary (AMR Solutions)
+### Current Version
+**API Version:** 8.0
+**Documentation Version:** 8.0.0
 
 ---
 
-**Built with ❤️ for developers**  
-**AMR Solutions - VatPortal API Team**
+**Need Help?** Contact us at support@amr.az
+
+**Built by AMR Solutions**
