@@ -8,15 +8,27 @@
 
 VatPortal API üçüncü tərəf ERP sistemlərinə Azərbaycanın e-taxes.gov.az sistemi ilə proqramlı şəkildə əlaqə qurmağa imkan verir. Qaimə-fakturaları yükləyin, onları elektron imzalayın, qaime nömrələrini əldə edin və vergi sənədlərini RESTful JSON API vasitəsilə idarə edin.
 
-## 📋 Sürətli Keçidlər
+## 📋 Sənədləşmə Naviqasiyası
 
+### 🚀 Başlanğıc
 - [**Sürətli Başlanğıc**](./quickstart.md) - 5 dəqiqədə işə başlayın
-- [**Autentifikasiya**](./authentication.md) - İcazə məlumatlarını və tokenləri quraşdırın
-- [**Qaimələri İdxal və Yükləmək**](./import-upload-invoices.md) - Əsas endpoint sənədləşməsi
+- [**Autentifikasiya**](./authentication.md) - İcazə məlumatlarını və tokenləri quraşdırın (istifadəçi adı/parol və token əsaslı)
+
+### 📡 API Endpointləri
+
+#### Qaimə Əməliyyatları
+- [**Qaimələri İdxal və Yükləmək**](./import-upload-invoices.md) - e-taxes.gov.az-a qaimələri yükləyin
 - [**E-taxes-dan Endirmə**](./download-from-etaxes.md) - e-taxes.gov.az-dan qaimələri endirin
 - [**E-taxes Qaimələrini Silmək**](./delete-etaxes-invoices.md) - Portal və e-taxes-dan qaimələri silin
-- [**Xəta Kodları**](./error-codes.md) - Problemlərin həlli üzrə bələdçi
-- [**Nümunələr**](./examples.md) - Real istifadə halları
+
+#### Məlumat Sənədləri
+- [**Qaimə Növləri**](./invoice-types.md) - Bütün dəstəklənən qaimə növləri və istifadəsi
+- [**Xəta Kodları**](./error-codes.md) - Tam xəta məlumatı və problemlərin həlli
+- [**Nümunələr**](./examples.md) - Real sorğu və cavab nümunələri
+
+### 📚 Əlavə Resurslar
+- [**Dəyişikliklər Jurnalı**](./CHANGELOG.md) - Versiya tarixi və buraxılış qeydləri
+- [**Sənədləşmə Bələdçisi**](./DOCUMENTATION_GUIDE.md) - Sənədləşməyə töhfə vermək üçün bələdçi
 
 ## 🔑 Əsas Xüsusiyyətlər
 

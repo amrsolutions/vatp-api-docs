@@ -8,15 +8,27 @@
 
 VatPortal API enables third-party ERP systems to programmatically interact with Azerbaijan's e-taxes.gov.az system. Upload invoices, sign them electronically, retrieve qaime numbers, and manage tax documents through a RESTful JSON API.
 
-## 📋 Quick Links
+## 📋 Documentation Navigation
 
+### 🚀 Getting Started
 - [**Quick Start**](./quickstart.md) - Get up and running in 5 minutes
-- [**Authentication**](./authentication.md) - Setup credentials and tokens
-- [**Import & Upload Invoices**](./import-upload-invoices.md) - Main endpoint reference
+- [**Authentication**](./authentication.md) - Setup credentials and tokens (username/password and token-based)
+
+### 📡 API Endpoints
+
+#### Invoice Operations
+- [**Import & Upload Invoices**](./import-upload-invoices.md) - Upload invoices to e-taxes.gov.az
 - [**Download from E-taxes**](./download-from-etaxes.md) - Download invoices from e-taxes.gov.az
 - [**Delete E-taxes Invoices**](./delete-etaxes-invoices.md) - Delete invoices from portal and e-taxes
-- [**Error Codes**](./error-codes.md) - Troubleshooting guide
-- [**Examples**](./examples.md) - Real-world use cases
+
+#### Reference Documentation
+- [**Invoice Types**](./invoice-types.md) - All supported invoice types and their usage
+- [**Error Codes**](./error-codes.md) - Complete error reference and troubleshooting
+- [**Examples**](./examples.md) - Real-world request and response examples
+
+### 📚 Additional Resources
+- [**Changelog**](./CHANGELOG.md) - Version history and release notes
+- [**Documentation Guide**](./DOCUMENTATION_GUIDE.md) - How to contribute to documentation
 
 ## 🔑 Key Features
 
