@@ -54,7 +54,7 @@ vatp-api-docs/
 
 ## 📞 Support
 
-- **Email:** support@amrsolutions.az
+- **Email:** support@amr.az
 - **Issues:** [GitHub Issues](https://github.com/amrsolutions/vatp-api-docs/issues)
 
 ## 📄 License
