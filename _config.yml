@@ -1,0 +1,30 @@
+# GitHub Pages Jekyll Configuration for VatPortal API Docs
+
+# Site settings
+title: VatPortal API Documentation
+description: Official API documentation for VatPortal - Integration with Azerbaijan's e-taxes.gov.az system
+baseurl: "/vatp-api-docs"
+url: "https://amrsolutions.github.io"
+
+# Build settings
+markdown: kramdown
+theme: jekyll-theme-minimal
+
+# Plugins
+plugins:
+  - jekyll-relative-links
+
+# Relative links configuration
+relative_links:
+  enabled: true
+  collections: false
+
+# Include these files
+include:
+  - README.md
+  - _config.yml
+
+# Exclude from build
+exclude:
+  - .git/
+  - .gitignore
