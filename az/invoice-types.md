@@ -199,9 +199,9 @@ if (status.stats.invoice_signed) {
 
 ## Daha Çox Məlumat Lazımdır?
 
-- [Qaimələri idxal edin →](../endpoints/import-upload-invoices.md)
-- [Qaimələri endirin →](../endpoints/download-qaimes.md)
-- [Qaime məlumatlarını oxuyun →](../endpoints/read-qaime-data.md)
+- [Qaimələri İdxal və Yükləmək →](./import-upload-invoices)
+- [Real nümunələr →](./examples)
+- [Xəta Kodları Arayışı →](./error-codes)
 
 ---
 

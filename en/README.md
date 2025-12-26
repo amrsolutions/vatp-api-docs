@@ -89,7 +89,7 @@ All endpoints return JSON with standard structure:
 ```
 
 - `res`: Success indicator (1 = success, 0 = error)
-- `err_code`: Error code (0 = no error, see [error codes](./reference/error-codes.md))
+- `err_code`: Error code (0 = no error, see [error codes](./error-codes))
 - `err_msg`: Human-readable error message
 - `data`: Response payload
 

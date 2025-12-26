@@ -331,7 +331,7 @@ The array `[37, 43]` contains error codes for this specific invoice:
 - `37` = Invoice ID not present
 - `43` = Item name is empty
 
-See [complete error codes →](../reference/error-codes.md)
+See [complete error codes →](./error-codes)
 
 ### Common Errors
 
@@ -367,10 +367,10 @@ Monitor progress using [Read Process Status](./read-process-status.md) endpoint.
 
 ## Next Steps
 
-- [Check process status →](./read-process-status.md)
-- [Get invoice data →](./read-process-data.md)
-- [Read qaime numbers →](./read-invoices.md)
-- [Error codes reference →](../reference/error-codes.md)
+- [View real-world examples →](./examples)
+- [Invoice types reference →](./invoice-types)
+- [Error codes reference →](./error-codes)
+- [Authentication guide →](./authentication)
 
 ---
 

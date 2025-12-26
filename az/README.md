@@ -89,7 +89,7 @@ Bütün endpointlər standart strukturla JSON qaytarır:
 ```
 
 - `res`: Uğur göstəricisi (1 = uğurlu, 0 = xəta)
-- `err_code`: Xəta kodu (0 = xəta yoxdur, [xəta kodlarına](./reference/error-codes.md) baxın)
+- `err_code`: Xəta kodu (0 = xəta yoxdur, [xəta kodlarına](./error-codes) baxın)
 - `err_msg`: İnsan oxuya bilən xəta mesajı
 - `data`: Cavab yükü
 

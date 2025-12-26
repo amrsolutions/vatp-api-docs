@@ -360,9 +360,9 @@ Uğurlu olsa, `err_code: 0` cavabı alacaqsınız.
 
 ## Növbəti Addımlar
 
-- [İlk API çağırışınızı edin →](./quickstart.md)
-- [API endpointlərini araşdırın →](./endpoints/)
-- [Kod nümunələrinə baxın →](./examples/)
+- [İlk API çağırışınızı edin →](./quickstart)
+- [Qaimələri İdxal və Yükləmək →](./import-upload-invoices)
+- [Kod nümunələrinə baxın →](./examples)
 
 ---
 

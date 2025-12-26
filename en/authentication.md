@@ -360,9 +360,9 @@ If successful, you'll get `err_code: 0` response.
 
 ## Next Steps
 
-- [Make your first API call →](./quickstart.md)
-- [Explore API endpoints →](./endpoints/)
-- [View code examples →](./examples/)
+- [Make your first API call →](./quickstart)
+- [Import & Upload Invoices →](./import-upload-invoices)
+- [View code examples →](./examples)
 
 ---
 

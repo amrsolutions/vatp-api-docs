@@ -574,9 +574,9 @@ async function safeApiCall(endpoint, payload) {
 
 ## Next Steps
 
-- [View all endpoints →](../endpoints/)
-- [Error codes reference →](../reference/error-codes.md)
-- [Authentication guide →](../authentication.md)
+- [Import & Upload Invoices →](./import-upload-invoices)
+- [Error codes reference →](./error-codes)
+- [Authentication guide →](./authentication)
 
 ---
 

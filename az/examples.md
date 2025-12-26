@@ -393,9 +393,9 @@ if __name__ == '__main__':
 
 ## Növbəti Addımlar
 
-- [Bütün endpointlərə baxın →](../endpoints/)
-- [Xəta kodları arayışı →](../reference/error-codes.md)
-- [Autentifikasiya bələdçisi →](../authentication.md)
+- [Qaimələri İdxal və Yükləmək →](./import-upload-invoices)
+- [Xəta kodları arayışı →](./error-codes)
+- [Autentifikasiya bələdçisi →](./authentication)
 
 ---
 

@@ -199,9 +199,9 @@ if (status.stats.invoice_signed) {
 
 ## Need More Info?
 
-- [Import invoices →](../endpoints/import-upload-invoices.md)
-- [Download qaimes →](../endpoints/download-qaimes.md)
-- [Read qaime data →](../endpoints/read-qaime-data.md)
+- [Import & Upload Invoices →](./import-upload-invoices)
+- [Real-world Examples →](./examples)
+- [Error Codes Reference →](./error-codes)
 
 ---
 

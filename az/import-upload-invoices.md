@@ -185,7 +185,7 @@ Massiv `[37, 43]` bu xüsusi qaimə üçün xəta kodlarını ehtiva edir:
 - `37` = Qaimə ID mövcud deyil
 - `43` = Məhsul adı boşdur
 
-[Tam xəta kodlarına baxın →](../reference/error-codes.md)
+[Tam xəta kodlarına baxın →](./error-codes)
 
 ## Yükləmə Axını
 
@@ -209,10 +209,10 @@ Massiv `[37, 43]` bu xüsusi qaimə üçün xəta kodlarını ehtiva edir:
 
 ## Növbəti Addımlar
 
-- [Proses statusunu yoxlayın →](./read-process-status.md)
-- [Qaimə məlumatlarını əldə edin →](./read-process-data.md)
-- [Qaime nömrələrini oxuyun →](./read-invoices.md)
-- [Xəta kodları arayışı →](../reference/error-codes.md)
+- [Real nümunələrə baxın →](./examples)
+- [Qaimə növləri arayışı →](./invoice-types)
+- [Xəta kodları arayışı →](./error-codes)
+- [Autentifikasiya bələdçisi →](./authentication)
 
 ---
 
