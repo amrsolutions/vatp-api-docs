@@ -119,7 +119,7 @@ SDK-ya töhfə vermək istəyirsiniz? [Dəstəklə əlaqə saxlayın](#dəstək)
 
 - **Sənədləşmə Problemləri:** [Problem yaradın](#)
 - **API Dəstəyi:** VatPortal hesab meneceri ilə əlaqə saxlayın
-- **Texniki Suallar:** support@amrsolutions.az
+- **Texniki Suallar:** support@amr.az
 
 ## 📄 Lisenziya və İstifadə
 

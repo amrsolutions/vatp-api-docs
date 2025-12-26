@@ -119,7 +119,7 @@ Want to contribute an SDK? [Contact support](#support)
 
 - **Documentation Issues:** [Open an issue](#)
 - **API Support:** Contact your VatPortal account manager
-- **Technical Questions:** support@amrsolutions.az
+- **Technical Questions:** support@amr.az
 
 ## 📄 License & Usage
 
