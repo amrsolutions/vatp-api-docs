@@ -10,11 +10,11 @@ VatPortal API üçüncü tərəf ERP sistemlərinə Azərbaycanın e-taxes.gov.a
 
 ## 📋 Sürətli Keçidlər
 
-- [**Sürətli Başlanğıc**](./quickstart.md) - 5 dəqiqədə işə başlayın
-- [**Autentifikasiya**](./authentication.md) - İcazə məlumatlarını və tokenləri quraşdırın
-- [**API Endpointləri**](./endpoints/) - Tam endpoint arayışı
-- [**Xəta Kodları**](./reference/error-codes.md) - Problemlərin həlli üzrə bələdçi
-- [**Nümunələr**](./examples/) - Real istifadə halları
+- [**Sürətli Başlanğıc**](./quickstart) - 5 dəqiqədə işə başlayın
+- [**Autentifikasiya**](./authentication) - İcazə məlumatlarını və tokenləri quraşdırın
+- [**Qaimələri İdxal və Yükləmək**](./import-upload-invoices) - Əsas endpoint sənədləşməsi
+- [**Xəta Kodları**](./error-codes) - Problemlərin həlli üzrə bələdçi
+- [**Nümunələr**](./examples) - Real istifadə halları
 
 ## 🔑 Əsas Xüsusiyyətlər
 
@@ -58,7 +58,7 @@ VatPortal API üçüncü tərəf ERP sistemlərinə Azərbaycanın e-taxes.gov.a
 | `agent` | Agent/komissiya satışı |
 | `exportNoteInvoice` | İxrac qeydi ilə ixrac |
 
-[Bütün qaimə növlərinə baxın →](./reference/invoice-types.md)
+[Bütün qaimə növlərinə baxın →](./invoice-types)
 
 ## 🔐 Autentifikasiya Üsulları
 

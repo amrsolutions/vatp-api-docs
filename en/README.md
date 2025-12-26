@@ -10,11 +10,11 @@ VatPortal API enables third-party ERP systems to programmatically interact with 
 
 ## 📋 Quick Links
 
-- [**Quick Start**](./quickstart.md) - Get up and running in 5 minutes
-- [**Authentication**](./authentication.md) - Setup credentials and tokens
-- [**API Endpoints**](./endpoints/) - Complete endpoint reference
-- [**Error Codes**](./reference/error-codes.md) - Troubleshooting guide
-- [**Examples**](./examples/) - Real-world use cases
+- [**Quick Start**](./quickstart) - Get up and running in 5 minutes
+- [**Authentication**](./authentication) - Setup credentials and tokens
+- [**Import & Upload Invoices**](./import-upload-invoices) - Main endpoint reference
+- [**Error Codes**](./error-codes) - Troubleshooting guide
+- [**Examples**](./examples) - Real-world use cases
 
 ## 🔑 Key Features
 
@@ -58,7 +58,7 @@ VatPortal API enables third-party ERP systems to programmatically interact with 
 | `agent` | Agent/commission sales |
 | `exportNoteInvoice` | Export with export note |
 
-[See all invoice types →](./reference/invoice-types.md)
+[See all invoice types →](./invoice-types)
 
 ## 🔐 Authentication Methods
 
