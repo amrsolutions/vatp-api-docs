@@ -44,22 +44,22 @@ VatPortal API enables third-party ERP systems to programmatically interact with 
 ## 📡 Available Endpoints
 
 ### Invoice Management
-- `POST /inv/import_upload_invoices.php` - Import and upload invoices
-- `GET /inv/read_invoices` - Read invoices with qaime numbers
-- `DELETE /inv/delete` - Delete unsubmitted invoices by ERP ID
+- [`POST /inv/import_upload_invoices.php`](./import-upload-invoices.md#endpoint) - Import and upload invoices
+- [`GET /inv/read_invoices`](./import-upload-invoices.md#read-invoices-with-qaime-numbers) - Read invoices with qaime numbers
+- [`DELETE /inv/delete`](./import-upload-invoices.md#delete-unsubmitted-invoices) - Delete unsubmitted invoices by ERP ID
 
 ### Process Monitoring
-- `GET /job/read_proc_status` - Check process status
-- `GET /job/read_proc_data` - Get detailed process data
+- [`GET /job/read_proc_status`](./import-upload-invoices.md#monitor-process) - Check process status
+- [`GET /job/read_proc_data`](./import-upload-invoices.md#monitor-process) - Get detailed process data
 
 ### E-taxes Integration
-- `POST /etx/import` - Download qaimes from online system (v7.0)
-- `GET /etx/read_invoices` - Read raw qaimes data (v7.0+)
-- `DELETE /etx/delete` - Delete qaimes by serie/number
+- [`POST /etx/import`](./download-from-etaxes.md#step-1-start-download-process) - Download qaimes from online system (v7.0)
+- [`GET /etx/read_invoices`](./download-from-etaxes.md#step-2-read-downloaded-invoice-data) - Read raw qaimes data (v7.0+)
+- [`DELETE /etx/delete`](./delete-etaxes-invoices.md#endpoint) - Delete qaimes by serie/number
 
 ### Authentication
-- `GET /auth/reset_start.php` - Initiate token renewal
-- `POST /auth/reset_confirm.php` - Confirm token renewal
+- [`GET /auth/reset_start.php`](./authentication.md#step-1-initiate-token-renewal) - Initiate token renewal
+- [`POST /auth/reset_confirm.php`](./authentication.md#step-2-confirm-token-renewal) - Confirm token renewal
 
 ## 🌍 Supported Invoice Types
 
