@@ -214,7 +214,7 @@ curl -X POST https://yourcompany.vatportal.az/api/inv/import_upload_invoices.php
   }
 }
 ```
-**Həll:** Qaimə ID-si yoxdur (37) və məhsul adı boşdur (43). [Xəta kodlarına](./error-codes) baxın
+**Həll:** Qaimə ID-si yoxdur (37) və məhsul adı boşdur (43). [Xəta kodlarına](./error-codes.md) baxın
 
 ### Xəta 6: Boş qaimələr massivi
 ```json
@@ -227,16 +227,16 @@ curl -X POST https://yourcompany.vatportal.az/api/inv/import_upload_invoices.php
 
 ## Növbəti Addımlar
 
-- 📖 [Tam autentifikasiya bələdçisini oxuyun](./authentication)
-- 🔍 [Əsas endpointi araşdırın](./import-upload-invoices)
-- 💡 [Real nümunələrə baxın](./examples)
-- ⚠️ [Xəta kodları arayışı](./error-codes)
+- 📖 [Tam autentifikasiya bələdçisini oxuyun](./authentication.md)
+- 🔍 [Əsas endpointi araşdırın](./import-upload-invoices.md)
+- 💡 [Real nümunələrə baxın](./examples.md)
+- ⚠️ [Xəta kodları arayışı](./error-codes.md)
 
 ## Köməyə ehtiyacınız var?
 
-- Autentifikasiyada problem? → [Autentifikasiya Bələdçisi](./authentication)
-- Qaimə validasiya xətaları? → [Xəta Kodları](./error-codes)
-- Tam nümunələr istəyirsiniz? → [Nümunələr](./examples)
+- Autentifikasiyada problem? → [Autentifikasiya Bələdçisi](./authentication.md)
+- Qaimə validasiya xətaları? → [Xəta Kodları](./error-codes.md)
+- Tam nümunələr istəyirsiniz? → [Nümunələr](./examples.md)
 
 ---
 

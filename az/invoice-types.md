@@ -199,9 +199,9 @@ if (status.stats.invoice_signed) {
 
 ## Daha Çox Məlumat Lazımdır?
 
-- [Qaimələri İdxal və Yükləmək →](./import-upload-invoices)
-- [Real nümunələr →](./examples)
-- [Xəta Kodları Arayışı →](./error-codes)
+- [Qaimələri İdxal və Yükləmək →](./import-upload-invoices.md)
+- [Real nümunələr →](./examples.md)
+- [Xəta Kodları Arayışı →](./error-codes.md)
 
 ---
 

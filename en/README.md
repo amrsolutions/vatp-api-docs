@@ -10,11 +10,11 @@ VatPortal API enables third-party ERP systems to programmatically interact with 
 
 ## 📋 Quick Links
 
-- [**Quick Start**](./quickstart) - Get up and running in 5 minutes
-- [**Authentication**](./authentication) - Setup credentials and tokens
-- [**Import & Upload Invoices**](./import-upload-invoices) - Main endpoint reference
-- [**Error Codes**](./error-codes) - Troubleshooting guide
-- [**Examples**](./examples) - Real-world use cases
+- [**Quick Start**](./quickstart.md) - Get up and running in 5 minutes
+- [**Authentication**](./authentication.md) - Setup credentials and tokens
+- [**Import & Upload Invoices**](./import-upload-invoices.md) - Main endpoint reference
+- [**Error Codes**](./error-codes.md) - Troubleshooting guide
+- [**Examples**](./examples.md) - Real-world use cases
 
 ## 🔑 Key Features
 
@@ -58,7 +58,7 @@ VatPortal API enables third-party ERP systems to programmatically interact with 
 | `agent` | Agent/commission sales |
 | `exportNoteInvoice` | Export with export note |
 
-[See all invoice types →](./invoice-types)
+[See all invoice types →](./invoice-types.md)
 
 ## 🔐 Authentication Methods
 
@@ -89,7 +89,7 @@ All endpoints return JSON with standard structure:
 ```
 
 - `res`: Success indicator (1 = success, 0 = error)
-- `err_code`: Error code (0 = no error, see [error codes](./error-codes))
+- `err_code`: Error code (0 = no error, see [error codes](./error-codes.md))
 - `err_msg`: Human-readable error message
 - `data`: Response payload
 

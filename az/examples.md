@@ -393,9 +393,9 @@ if __name__ == '__main__':
 
 ## Növbəti Addımlar
 
-- [Qaimələri İdxal və Yükləmək →](./import-upload-invoices)
-- [Xəta kodları arayışı →](./error-codes)
-- [Autentifikasiya bələdçisi →](./authentication)
+- [Qaimələri İdxal və Yükləmək →](./import-upload-invoices.md)
+- [Xəta kodları arayışı →](./error-codes.md)
+- [Autentifikasiya bələdçisi →](./authentication.md)
 
 ---
 

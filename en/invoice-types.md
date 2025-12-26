@@ -199,9 +199,9 @@ if (status.stats.invoice_signed) {
 
 ## Need More Info?
 
-- [Import & Upload Invoices →](./import-upload-invoices)
-- [Real-world Examples →](./examples)
-- [Error Codes Reference →](./error-codes)
+- [Import & Upload Invoices →](./import-upload-invoices.md)
+- [Real-world Examples →](./examples.md)
+- [Error Codes Reference →](./error-codes.md)
 
 ---
 

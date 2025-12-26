@@ -214,7 +214,7 @@ curl -X POST https://yourcompany.vatportal.az/api/inv/import_upload_invoices.php
   }
 }
 ```
-**Fix:** Invoice ID missing (37) and item name empty (43). See [error codes](./error-codes)
+**Fix:** Invoice ID missing (37) and item name empty (43). See [error codes](./error-codes.md)
 
 ### Error 6: Empty invoices array
 ```json
@@ -227,16 +227,16 @@ curl -X POST https://yourcompany.vatportal.az/api/inv/import_upload_invoices.php
 
 ## Next Steps
 
-- 📖 [Read full authentication guide](./authentication)
-- 🔍 [Explore main endpoint](./import-upload-invoices)
-- 💡 [Check real-world examples](./examples)
-- ⚠️ [Error codes reference](./error-codes)
+- 📖 [Read full authentication guide](./authentication.md)
+- 🔍 [Explore main endpoint](./import-upload-invoices.md)
+- 💡 [Check real-world examples](./examples.md)
+- ⚠️ [Error codes reference](./error-codes.md)
 
 ## Need Help?
 
-- Stuck on authentication? → [Authentication Guide](./authentication)
-- Invoice validation errors? → [Error Codes](./error-codes)
-- Want complete examples? → [Examples](./examples)
+- Stuck on authentication? → [Authentication Guide](./authentication.md)
+- Invoice validation errors? → [Error Codes](./error-codes.md)
+- Want complete examples? → [Examples](./examples.md)
 
 ---
 
