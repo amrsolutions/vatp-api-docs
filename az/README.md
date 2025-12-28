@@ -12,6 +12,12 @@ ERP sisteminizi birbaşa e-taxes.gov.az ilə birləşdirin. Qaimə-fakturaları 
 
 [**🚀 Sürətli Başlanğıc Bələdçisi**](./quickstart.md) &nbsp;&nbsp;&nbsp; [**🤝 Mən Partnerəm**](./partner-integration.md) &nbsp;&nbsp;&nbsp; [**📞 Dəstək Alın**](#dəstək)
 
+### 🧪 İnteraktiv API Testi
+
+**[Brauzerdə API-ni sınayın →](../swagger.html)**
+
+Öz subdomeniniz və icazə məlumatlarınız ilə bütün endpointləri interaktiv Swagger UI sənədləşməsindən istifadə edərək test edin.
+
 
 ---
 
@@ -169,6 +175,13 @@ Bütün endpointlər standart strukturla JSON qaytarır:
 - `data`: Cavab yükü
 
 ## 🛠️ SDK-lar və Alətlər
+
+### İnteraktiv API Sənədləşməsi
+
+- **[Swagger UI (OpenAPI 3.0)](../swagger.html)** - Öz subdomeniniz ilə brauzerdə birbaşa API endpointlərini test edin
+- **[OpenAPI Spesifikasiyası](../openapi.yaml)** - Tam API spesifikasiyasını endirin
+
+### İcma SDK-ları
 
 Hazırda VatPortal API birbaşa HTTP sorğuları tələb edir. İcma SDK-ları:
 

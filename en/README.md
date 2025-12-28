@@ -12,6 +12,12 @@ Connect your ERP system directly to e-taxes.gov.az. Upload invoices, sign electr
 
 [**🚀 Quick Start Guide**](./quickstart.md) &nbsp;&nbsp;&nbsp; [**🤝 I'm a Partner**](./partner-integration.md) &nbsp;&nbsp;&nbsp; [**📞 Get Support**](#support)
 
+### 🧪 Interactive API Testing
+
+**[Try the API in your browser →](../swagger.html)**
+
+Test all endpoints with your own subdomain and credentials using our interactive Swagger UI documentation.
+
 
 ---
 
@@ -169,6 +175,13 @@ All endpoints return JSON with standard structure:
 - `data`: Response payload
 
 ## 🛠️ SDKs and Tools
+
+### Interactive API Documentation
+
+- **[Swagger UI (OpenAPI 3.0)](../swagger.html)** - Test API endpoints directly in your browser with your subdomain
+- **[OpenAPI Specification](../openapi.yaml)** - Download the complete API specification
+
+### Community SDKs
 
 Currently, VatPortal API requires direct HTTP requests. Community SDKs:
 

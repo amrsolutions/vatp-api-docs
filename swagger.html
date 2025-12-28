@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VatPortal API - Interactive Documentation</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Custom header banner */
+        .topbar {
+            background-color: #1b1b1b !important;
+            border-bottom: 3px solid #4CAF50;
+        }
+
+        /* Custom info section styling */
+        .information-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Subdomain input styling */
+        #subdomain-config {
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        #subdomain-config h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+
+        #subdomain-config input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 300px;
+            margin-right: 10px;
+        }
+
+        #subdomain-config button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #subdomain-config button:hover {
+            background-color: #45a049;
+        }
+
+        .subdomain-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #856404;
+        }
+
+        .current-server {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 4px;
+            color: #0c5460;
+        }
+
+        .swagger-ui .topbar .download-url-wrapper {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="swagger-ui"></div>
+
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-standalone-preset.js"></script>
+    <script>
+        window.onload = function() {
+            // Get subdomain from localStorage or use default
+            const savedSubdomain = localStorage.getItem('vatportal_subdomain') || 'demo';
+
+            // Initialize Swagger UI
+            const ui = SwaggerUIBundle({
+                url: './openapi.yaml',
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                // Set the server based on saved subdomain
+                onComplete: function() {
+                    updateServerUrl(savedSubdomain);
+                    injectSubdomainConfig();
+                }
+            });
+
+            window.ui = ui;
+
+            // Function to update server URL
+            function updateServerUrl(subdomain) {
+                const servers = [{
+                    url: `https://${subdomain}.vatportal.az/api`,
+                    description: `API Server (${subdomain})`
+                }];
+
+                ui.specActions.updateSpec(JSON.stringify({
+                    ...ui.getState().toJSON().spec.json,
+                    servers: servers
+                }));
+            }
+
+            // Inject custom subdomain configuration UI
+            function injectSubdomainConfig() {
+                setTimeout(() => {
+                    const infoContainer = document.querySelector('.information-container');
+                    if (infoContainer && !document.getElementById('subdomain-config')) {
+                        const configDiv = document.createElement('div');
+                        configDiv.id = 'subdomain-config';
+                        configDiv.innerHTML = `
+                            <h3>🔧 Configure Your Company Subdomain</h3>
+                            <p>Enter your company or partner subdomain to test the API with your credentials:</p>
+                            <div>
+                                <input
+                                    type="text"
+                                    id="subdomain-input"
+                                    placeholder="Enter subdomain (e.g., mycompany)"
+                                    value="${savedSubdomain}"
+                                />
+                                <button onclick="setSubdomain()">Update Server</button>
+                            </div>
+                            <div class="subdomain-info">
+                                <strong>💡 Examples:</strong><br>
+                                • Enterprise customers: Use your company subdomain (e.g., "mycompany")<br>
+                                • Partners: Use your partner account subdomain (e.g., "partnername")<br>
+                                • Testing: Use "demo" for testing
+                            </div>
+                            <div class="current-server" id="current-server-display">
+                                Current Server: <strong>https://${savedSubdomain}.vatportal.az/api</strong>
+                            </div>
+                        `;
+                        infoContainer.appendChild(configDiv);
+                    }
+                }, 500);
+            }
+
+            // Make setSubdomain function globally accessible
+            window.setSubdomain = function() {
+                const subdomainInput = document.getElementById('subdomain-input');
+                const subdomain = subdomainInput.value.trim();
+
+                if (!subdomain) {
+                    alert('Please enter a subdomain');
+                    return;
+                }
+
+                // Validate subdomain format (alphanumeric and hyphens)
+                if (!/^[a-z0-9-]+$/i.test(subdomain)) {
+                    alert('Invalid subdomain format. Use only letters, numbers, and hyphens.');
+                    return;
+                }
+
+                // Save to localStorage
+                localStorage.setItem('vatportal_subdomain', subdomain);
+
+                // Update the server URL
+                updateServerUrl(subdomain);
+
+                // Update display
+                const serverDisplay = document.getElementById('current-server-display');
+                if (serverDisplay) {
+                    serverDisplay.innerHTML = `Current Server: <strong>https://${subdomain}.vatportal.az/api</strong>`;
+                }
+
+                // Show success message
+                alert(`Server updated to: https://${subdomain}.vatportal.az/api\n\nYou can now test the API with your credentials.`);
+            };
+
+            // Allow Enter key to submit
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && document.activeElement.id === 'subdomain-input') {
+                    setSubdomain();
+                }
+            });
+        };
+    </script>
+</body>
+</html>

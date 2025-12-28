@@ -1,0 +1,1140 @@
+openapi: 3.0.3
+info:
+  title: VatPortal API
+  description: |
+    VatPortal API allows you to integrate with Azerbaijan's e-taxes.gov.az system for managing invoices (qaimes).
+
+    ## Features
+    - Import and upload invoices to e-taxes.gov.az
+    - Download invoices from e-taxes.gov.az
+    - Delete invoices from portal and e-taxes
+    - Monitor asynchronous process status
+    - Support for both enterprise and partner integrations
+
+    ## Base URL
+    Your base URL is: `https://{subdomain}.vatportal.az/api`
+
+    Replace `{subdomain}` with:
+    - **Enterprise customers**: Your company subdomain
+    - **Partners**: Your partner account subdomain
+
+    ## Authentication
+    Two methods supported:
+    1. **Username/Password**: Include in request body
+    2. **API Token**: Use `x-vatpapikey` header (recommended)
+
+    ## Partner vs Enterprise
+    - **Enterprise**: Single company integration (no `phone` parameter needed)
+    - **Partner**: Multi-customer integration (`phone` parameter required in all requests)
+
+    See [Partner Integration Guide](https://github.com/yourusername/vatportal-docs/blob/main/en/partner-integration.md) for details.
+
+  version: 1.0.0
+  contact:
+    name: VatPortal Support
+    url: https://vatportal.az
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://{subdomain}.vatportal.az/api
+    description: Production server
+    variables:
+      subdomain:
+        default: demo
+        description: |
+          Your company or partner subdomain.
+          - Enterprise customers: Use your company subdomain (e.g., 'mycompany')
+          - Partners: Use your partner account subdomain (e.g., 'partnername')
+
+tags:
+  - name: Invoices
+    description: Import, upload, and read invoice operations
+  - name: E-taxes
+    description: Download and delete invoices from e-taxes.gov.az
+  - name: Process Monitoring
+    description: Monitor asynchronous process status
+
+security:
+  - ApiKeyAuth: []
+  - UsernamePassword: []
+
+paths:
+  /inv/import_upload_invoices.php:
+    post:
+      tags:
+        - Invoices
+      summary: Import and upload invoices
+      description: |
+        Import invoices to VatPortal and optionally upload them to e-taxes.gov.az for signing.
+
+        **Process Flow:**
+        1. Import - Invoice saved to portal
+        2. Packet Creation - Invoice packaged for e-taxes
+        3. Login - Authenticate with e-taxes (PIN1 required if upload=true)
+        4. Upload - Send packet to e-taxes
+        5. Signing - Electronic signature (PIN2 required)
+        6. Complete - Qaime number assigned
+
+        **Recommended Polling:** Use progressive intervals (2s → 5s → 10s) for 3-5 minute operations.
+
+        See [Polling Best Practices](https://github.com/yourusername/vatportal-docs/blob/main/en/polling-guide.md)
+      operationId: importUploadInvoices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Portal username (not required if using x-vatpapikey header)
+                  example: myusername
+                password:
+                  type: string
+                  description: Portal password (not required if using x-vatpapikey header)
+                  example: mypassword
+                phone:
+                  type: string
+                  description: |
+                    **[Partners only]** ASAN phone number in format 994XXXXXXXXX.
+                    Identifies which customer you're operating on behalf of.
+                  example: "994501234567"
+                  pattern: '^994[0-9]{9}$'
+                upload:
+                  type: boolean
+                  description: Whether to upload invoices to e-taxes.gov.az
+                  default: false
+                use_old_sys:
+                  type: boolean
+                  description: Use old (green) e-taxes system
+                  default: false
+                invoices:
+                  type: array
+                  description: Array of invoice objects to import/upload
+                  minItems: 1
+                  items:
+                    $ref: '#/components/schemas/Invoice'
+              required:
+                - invoices
+            examples:
+              importOnly:
+                summary: Import without upload
+                value:
+                  username: myusername
+                  password: mypassword
+                  upload: false
+                  invoices:
+                    - id: INV-2025-001
+                      main_info: Test Invoice
+                      seller: "1234567890"
+                      buyer: "0987654321"
+                      sum_subtotal1: 100
+                      sum_subtotal2: 100
+                      sum_total: 100
+                      items:
+                        - id: "PROD-001"
+                          name: Test Product
+                          unit: pcs
+                          unit_price: 100
+                          quantity: 1
+                          barcode: PROD-001000
+                          subtotal1: 100
+                          subtotal2: 100
+                          total: 100
+              standardInvoiceWithVAT:
+                summary: Standard invoice with 18% VAT
+                value:
+                  username: myusername
+                  password: mypassword
+                  upload: true
+                  use_old_sys: false
+                  invoices:
+                    - id: "2024030110400001"
+                      main_info: "Contract A001; 08.01.2024"
+                      seller: "1111111111"
+                      buyer: "0000000000"
+                      sum_subtotal1: 118
+                      sum_subtotal2: 118
+                      sum_apply_vat_amount: 118
+                      sum_vat_amount: 21.24
+                      sum_total: 139.24
+                      items:
+                        - id: "0000000001"
+                          name: Product Name
+                          unit: pcs
+                          unit_price: 118
+                          quantity: 1
+                          barcode: "0000000001000"
+                          subtotal1: 118
+                          subtotal2: 118
+                          apply_vat_amount: 118
+                          vat_amount: 21.24
+                          total: 139.24
+              partnerRequest:
+                summary: Partner request with phone parameter
+                value:
+                  username: partner_username
+                  password: partner_password
+                  phone: "994501234567"
+                  upload: true
+                  invoices:
+                    - id: INV-2025-001
+                      main_info: Invoice for customer
+                      seller: "1234567890"
+                      buyer: "0987654321"
+                      sum_subtotal1: 100
+                      sum_subtotal2: 100
+                      sum_total: 100
+                      items:
+                        - id: "PROD-001"
+                          name: Test Product
+                          unit: pcs
+                          unit_price: 100
+                          quantity: 1
+                          barcode: PROD-001000
+                          subtotal1: 100
+                          subtotal2: 100
+                          total: 100
+      responses:
+        '200':
+          description: Success - Returns process ID for monitoring
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessResponse'
+              examples:
+                success:
+                  value:
+                    res: 1
+                    err_code: 0
+                    err_msg: ""
+                    data:
+                      id: 12345
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                validationError:
+                  value:
+                    res: 0
+                    err_code: 14
+                    err_msg: ""
+                    data:
+                      invoices:
+                        - [37, 43]
+                emptyInvoices:
+                  value:
+                    res: 0
+                    err_code: 6
+                    err_msg: "Invoices array is empty"
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidCredentials:
+                  value:
+                    res: 0
+                    err_code: 5
+                    err_msg: "Invalid username or password"
+
+  /inv/read_invoices:
+    post:
+      tags:
+        - Invoices
+      summary: Read invoice data
+      description: |
+        Retrieve invoice details by ERP IDs. Returns invoice data including qaime numbers.
+      operationId: readInvoices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Portal username (not required if using x-vatpapikey header)
+                password:
+                  type: string
+                  description: Portal password (not required if using x-vatpapikey header)
+                phone:
+                  type: string
+                  description: "**[Partners only]** ASAN phone number (format: 994XXXXXXXXX)"
+                  pattern: '^994[0-9]{9}$'
+                ids:
+                  type: array
+                  description: Array of ERP invoice IDs
+                  items:
+                    type: string
+                  example: ["INV-2025-001", "INV-2025-002"]
+              required:
+                - ids
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  res:
+                    type: integer
+                    example: 1
+                  err_code:
+                    type: integer
+                    example: 0
+                  err_msg:
+                    type: string
+                    example: ""
+                  data:
+                    type: object
+                    properties:
+                      invoices:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: INV-2025-001
+                            qaime:
+                              type: string
+                              example: AA25010000123
+                      total:
+                        type: integer
+                        example: 1
+
+  /etx/import:
+    post:
+      tags:
+        - E-taxes
+      summary: Download invoices from e-taxes.gov.az
+      description: |
+        Start download process to retrieve invoices from e-taxes.gov.az into your portal.
+
+        **Two-step process:**
+        1. Call this endpoint to start download (returns process ID)
+        2. Use `/etx/read_invoices` to retrieve the downloaded data
+
+        **Average process time:** 3-5 minutes
+        **Recommended polling:** Progressive intervals (2s → 5s → 10s)
+
+        See [Download from E-taxes Guide](https://github.com/yourusername/vatportal-docs/blob/main/en/download-from-etaxes.md)
+      operationId: downloadFromEtaxes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Portal username (not required if using x-vatpapikey header)
+                password:
+                  type: string
+                  description: Portal password (not required if using x-vatpapikey header)
+                phone:
+                  type: string
+                  description: "**[Partners only]** ASAN phone number (format: 994XXXXXXXXX)"
+                  pattern: '^994[0-9]{9}$'
+                date_from:
+                  type: string
+                  description: Start date (dd.mm.yyyy or dd.mm.yyyy hh:mm)
+                  example: "01.01.2025"
+                date_to:
+                  type: string
+                  description: End date (dd.mm.yyyy or dd.mm.yyyy hh:mm)
+                  example: "31.01.2025"
+                dir:
+                  type: integer
+                  description: "Folder type: 0 = Incoming, 1 = Sent"
+                  enum: [0, 1]
+                  default: 0
+                inc_kinds:
+                  type: string
+                  description: |
+                    Include only these invoice types (comma-separated).
+                    Example: "defaultInvoice,advanceInvoice"
+                  example: "defaultInvoice"
+                exc_kinds:
+                  type: string
+                  description: |
+                    Exclude these invoice types (comma-separated).
+                    Example: "returnInvoice,returnByAgent"
+                  example: "returnInvoice"
+                inc_status:
+                  type: string
+                  description: |
+                    Include only these statuses (comma-separated).
+                    Example: "approved,onApproval"
+                  example: "approved,onApproval"
+                exc_status:
+                  type: string
+                  description: |
+                    Exclude these statuses (comma-separated).
+                    Example: "canceled,deleted"
+                  example: "canceled,deleted"
+              required:
+                - date_from
+                - date_to
+            examples:
+              enterprise:
+                summary: Enterprise customer - Download approved invoices
+                value:
+                  username: myusername
+                  password: mypassword
+                  date_from: "01.01.2025"
+                  date_to: "31.01.2025"
+                  dir: 1
+                  inc_status: "approved,onApproval"
+              partner:
+                summary: Partner - Download for specific customer
+                value:
+                  username: partner_username
+                  password: partner_password
+                  phone: "994501234567"
+                  date_from: "01.01.2025"
+                  date_to: "31.01.2025"
+                  dir: 0
+                  exc_status: "canceled,deleted"
+      responses:
+        '200':
+          description: Success - Returns process ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessResponse'
+
+  /etx/read_invoices:
+    get:
+      tags:
+        - E-taxes
+      summary: Read downloaded invoice data from e-taxes
+      description: |
+        Retrieve complete invoice data that was downloaded from e-taxes.gov.az.
+
+        Can search by:
+        - Process ID (from /etx/import response)
+        - Date range with pagination (5000 records per page)
+      operationId: readEtaxesInvoices
+      parameters:
+        - name: Content-Type
+          in: header
+          required: true
+          schema:
+            type: string
+            default: application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Portal username (not required if using x-vatpapikey header)
+                password:
+                  type: string
+                  description: Portal password (not required if using x-vatpapikey header)
+                phone:
+                  type: string
+                  description: "**[Partners only]** ASAN phone number (format: 994XXXXXXXXX)"
+                  pattern: '^994[0-9]{9}$'
+                procId:
+                  type: integer
+                  description: Process ID from /etx/import response
+                  example: 123
+                date_from:
+                  type: string
+                  description: Start date (dd.mm.yyyy) - alternative to procId
+                  example: "01.01.2025"
+                date_to:
+                  type: string
+                  description: End date (dd.mm.yyyy) - alternative to procId
+                  example: "31.01.2025"
+                dir:
+                  type: integer
+                  description: "Folder type: 0 = Incoming, 1 = Sent"
+                  enum: [0, 1]
+                  default: 0
+                from:
+                  type: integer
+                  description: Page number (starts at 1)
+                  default: 1
+            examples:
+              byProcessId:
+                summary: Search by process ID
+                value:
+                  username: myusername
+                  password: mypassword
+                  procId: 123
+                  dir: 1
+              byDateRange:
+                summary: Search by date range
+                value:
+                  username: myusername
+                  password: mypassword
+                  date_from: "01.01.2025"
+                  date_to: "31.01.2025"
+                  dir: 0
+                  from: 1
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  res:
+                    type: integer
+                  err_code:
+                    type: integer
+                  err_msg:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      invoices:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/EtaxesInvoice'
+                      total:
+                        type: integer
+
+  /etx/delete:
+    delete:
+      tags:
+        - E-taxes
+      summary: Delete invoices from e-taxes and portal
+      description: |
+        Delete invoices (qaimes) from BOTH the portal and e-taxes.gov.az system.
+
+        **⚠️ Critical Warnings:**
+        - Deletes from BOTH portal and e-taxes
+        - All-or-nothing operation
+        - Irreversible once completed
+        - Returns process ID for monitoring
+
+        **Can delete:**
+        - Draft invoices (not yet submitted)
+        - Signed invoices (awaiting counterparty approval)
+
+        **Cannot delete:**
+        - Already approved invoices
+        - Cancelled invoices
+        - Final/completed status invoices
+
+        See [Delete E-taxes Invoices Guide](https://github.com/yourusername/vatportal-docs/blob/main/en/delete-etaxes-invoices.md)
+      operationId: deleteEtaxesInvoices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Portal username (not required if using x-vatpapikey header)
+                password:
+                  type: string
+                  description: Portal password (not required if using x-vatpapikey header)
+                phone:
+                  type: string
+                  description: "**[Partners only]** ASAN phone number (format: 994XXXXXXXXX)"
+                  pattern: '^994[0-9]{9}$'
+                serialNumbers:
+                  type: array
+                  description: |
+                    Array of qaime serie/numbers to delete.
+                    Format: "SERIE NUMBER" (e.g., "AA2401 10000001")
+                  items:
+                    type: string
+                  example: ["AA2401 10000001", "AA2401 10000002"]
+                is_signed:
+                  type: boolean
+                  description: |
+                    Whether invoices are signed (in sent folder) or drafts.
+                    - false (default): Invoices in draft folder
+                    - true: Invoices in sent folder (signed, awaiting approval)
+                  default: false
+              required:
+                - serialNumbers
+            examples:
+              deleteDrafts:
+                summary: Delete draft invoices
+                value:
+                  username: myusername
+                  password: mypassword
+                  serialNumbers:
+                    - "AA2401 10000001"
+                    - "AA2401 10000002"
+                  is_signed: false
+              deleteSigned:
+                summary: Delete signed invoices (awaiting approval)
+                value:
+                  username: myusername
+                  password: mypassword
+                  serialNumbers:
+                    - "MT2412 25000100"
+                  is_signed: true
+      responses:
+        '200':
+          description: Success - Returns process ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessResponse'
+        '400':
+          description: Error - Qaime not found or cannot be deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                qaimeNotFound:
+                  value:
+                    res: 0
+                    err_code: 20
+                    err_msg: "Qaime not found or not in specified folder"
+
+  /job/read_proc_status:
+    get:
+      tags:
+        - Process Monitoring
+      summary: Check process status
+      description: |
+        Monitor the status of asynchronous operations (import, upload, download, delete).
+
+        **Status Codes:**
+        - `2` = Process completed successfully
+        - `3` = Process completed with errors
+
+        **Recommended Polling Strategy:**
+        For 3-5 minute operations, use progressive intervals:
+        - First 60 seconds: Poll every 2 seconds
+        - 60-120 seconds: Poll every 5 seconds
+        - After 120 seconds: Poll every 10 seconds
+
+        See [Polling Best Practices](https://github.com/yourusername/vatportal-docs/blob/main/en/polling-guide.md)
+      operationId: readProcessStatus
+      parameters:
+        - name: Content-Type
+          in: header
+          required: true
+          schema:
+            type: string
+            default: application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Portal username (not required if using x-vatpapikey header)
+                password:
+                  type: string
+                  description: Portal password (not required if using x-vatpapikey header)
+                phone:
+                  type: string
+                  description: "**[Partners only]** ASAN phone number (format: 994XXXXXXXXX)"
+                  pattern: '^994[0-9]{9}$'
+                procId:
+                  type: integer
+                  description: Process ID from initial request
+                  example: 12345
+              required:
+                - procId
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  res:
+                    type: integer
+                    example: 1
+                  err_code:
+                    type: integer
+                    example: 0
+                  data:
+                    type: object
+                    properties:
+                      status:
+                        type: integer
+                        description: "2 = Success, 3 = Error"
+                        example: 2
+                      status_desc:
+                        type: string
+                        example: "Process Finalized Successfully"
+                      stats:
+                        type: object
+                        description: Statistics about the process
+                        additionalProperties: true
+                        example:
+                          imported: 1
+                          packet_created: 1
+                          login_done: true
+
+  /job/read_proc_data:
+    get:
+      tags:
+        - Process Monitoring
+      summary: Get detailed process data
+      description: |
+        Retrieve detailed information about a process, including logs and error messages.
+      operationId: readProcessData
+      parameters:
+        - name: Content-Type
+          in: header
+          required: true
+          schema:
+            type: string
+            default: application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Portal username (not required if using x-vatpapikey header)
+                password:
+                  type: string
+                  description: Portal password (not required if using x-vatpapikey header)
+                phone:
+                  type: string
+                  description: "**[Partners only]** ASAN phone number (format: 994XXXXXXXXX)"
+                  pattern: '^994[0-9]{9}$'
+                procId:
+                  type: integer
+                  description: Process ID from initial request
+                  example: 12345
+              required:
+                - procId
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  res:
+                    type: integer
+                  err_code:
+                    type: integer
+                  data:
+                    type: object
+                    additionalProperties: true
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-vatpapikey
+      description: |
+        API token for authentication. Generate in VatPortal: Profile → Access to API
+    UsernamePassword:
+      type: http
+      scheme: basic
+      description: |
+        Alternative: Include username/password in request body
+
+  schemas:
+    Invoice:
+      type: object
+      required:
+        - id
+        - main_info
+        - seller
+        - buyer
+        - sum_subtotal1
+        - sum_subtotal2
+        - sum_total
+        - items
+      properties:
+        id:
+          type: string
+          description: Unique invoice ID from your ERP (min 7 chars)
+          minLength: 7
+          example: "INV-2025-001"
+        type:
+          type: string
+          description: Invoice type
+          enum: [default, avans, goodsTransfer]
+          default: default
+        with_agent:
+          type: boolean
+          description: Whether items managed by agent
+          default: false
+        transp_reg_number:
+          type: string
+          description: Transport registration number
+        from_wh:
+          type: string
+          description: Source warehouse (for goods transfer)
+        to_wh:
+          type: string
+          description: Destination warehouse (for goods transfer)
+        wh_field:
+          type: integer
+          description: "Warehouse lookup: 1 = by code, 2 = by name"
+          enum: [1, 2]
+          default: 1
+        main_qaime:
+          type: string
+          description: Base invoice for "avans" type
+          example: "AA24070000000"
+        main_info:
+          type: string
+          description: Main description
+          example: "Contract A001; 08.01.2024"
+        add_info:
+          type: string
+          description: Additional notes
+        seller:
+          type: string
+          description: Seller VOEN (10 digits)
+          pattern: '^[0-9]{10}$'
+          example: "1234567890"
+        buyer:
+          type: string
+          description: Buyer VOEN (10 digits)
+          pattern: '^[0-9]{10}$'
+          example: "0987654321"
+        sum_subtotal1:
+          type: number
+          format: decimal
+          description: Total price of goods
+          example: 100.00
+        sum_aksiz:
+          type: number
+          format: decimal
+          description: Total excise amount
+          default: 0
+        sum_subtotal2:
+          type: number
+          format: decimal
+          description: Total amount after excise
+          example: 100.00
+        sum_apply_vat_amount:
+          type: number
+          format: decimal
+          description: Amount subject to VAT
+          default: 0
+        sum_skip_vat_amount:
+          type: number
+          format: decimal
+          description: Amount not subject to VAT
+          default: 0
+        sum_vat_zero:
+          type: number
+          format: decimal
+          description: Amount with 0% VAT
+          default: 0
+        sum_vat_free:
+          type: number
+          format: decimal
+          description: VAT-exempt amount
+          default: 0
+        sum_vat_amount:
+          type: number
+          format: decimal
+          description: Total VAT to pay
+          default: 0
+        sum_ttax:
+          type: number
+          format: decimal
+          description: Road tax amount
+          default: 0
+        sum_total:
+          type: number
+          format: decimal
+          description: Final total amount
+          example: 100.00
+        items:
+          type: array
+          description: Array of line items
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/InvoiceItem'
+
+    InvoiceItem:
+      type: object
+      required:
+        - id
+        - name
+        - unit
+        - unit_price
+        - quantity
+        - barcode
+        - subtotal1
+        - subtotal2
+        - total
+      properties:
+        id:
+          type: string
+          description: Product code (10 digits)
+          pattern: '^[0-9A-Z-]{10}$'
+          example: "0000000001"
+        name:
+          type: string
+          description: Product name
+          example: "Test Product"
+        unit:
+          type: string
+          description: Unit of measurement
+          example: "pcs"
+        unit_price:
+          type: number
+          format: decimal
+          description: Price per unit
+          example: 100.00
+        quantity:
+          type: number
+          format: decimal
+          description: Quantity
+          example: 1
+        barcode:
+          type: string
+          description: Barcode (can be product code + "000")
+          example: "0000000001000"
+        subtotal1:
+          type: number
+          format: decimal
+          description: Total price
+          example: 100.00
+        aksiz:
+          type: number
+          format: decimal
+          description: Excise amount
+          default: 0
+        aksizgrade:
+          type: number
+          format: decimal
+          description: Excise rate
+          default: 0
+        subtotal2:
+          type: number
+          format: decimal
+          description: Total after excise
+          example: 100.00
+        apply_vat_amount:
+          type: number
+          format: decimal
+          description: Amount subject to VAT
+          default: 0
+        skip_vat_amount:
+          type: number
+          format: decimal
+          description: Amount not subject to VAT
+          default: 0
+        vat_zero:
+          type: number
+          format: decimal
+          description: Amount with 0% VAT
+          default: 0
+        vat_free:
+          type: number
+          format: decimal
+          description: VAT-exempt amount
+          default: 0
+        vat_amount:
+          type: number
+          format: decimal
+          description: VAT to pay
+          default: 0
+        transport_tax:
+          type: number
+          format: decimal
+          description: Road tax
+          default: 0
+        total:
+          type: number
+          format: decimal
+          description: Item total
+          example: 100.00
+
+    EtaxesInvoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12345
+        main_subject:
+          type: string
+          example: "Contract A001"
+        add_subject:
+          type: string
+          example: "Additional info"
+        serial:
+          type: string
+          example: "AA"
+        number:
+          type: string
+          example: "24080000001"
+        qaime:
+          type: string
+          example: "AA24080000001"
+        cmp_from:
+          type: string
+          example: "Company LLC"
+        cmp_to:
+          type: string
+          example: "Buyer Company"
+        tin_from:
+          type: string
+          example: "1111111111"
+        tin_to:
+          type: string
+          example: "0000000000"
+        datetime:
+          type: string
+          example: "07.08.2025 14:30"
+        ini_amount:
+          type: number
+          example: 1000.00
+        ini_amount1:
+          type: number
+          example: 1000.00
+        ini_amount2:
+          type: number
+          example: 1000.00
+        excise_amount:
+          type: number
+          example: 0
+        apply_amount:
+          type: number
+          example: 1000.00
+        skip_amount:
+          type: number
+          example: 0
+        zero_amount:
+          type: number
+          example: 0
+        free_amount:
+          type: number
+          example: 0
+        vat_amount:
+          type: number
+          example: 180.00
+        transp_amount:
+          type: number
+          example: 0
+        net_amount:
+          type: number
+          example: 1180.00
+        status:
+          type: string
+          example: "approved"
+        type:
+          type: string
+          example: "defaultInvoice"
+        lines:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              line:
+                type: integer
+              prod_code:
+                type: string
+              prod_name:
+                type: string
+              barcode:
+                type: string
+              unit_name:
+                type: string
+              unit_price:
+                type: number
+              unit_qty:
+                type: number
+              ini_amount:
+                type: number
+              ini_amount2:
+                type: number
+              grade:
+                type: number
+              total_excise:
+                type: number
+              apply_amount:
+                type: number
+              skip_amount:
+                type: number
+              zero_amount:
+                type: number
+              free_amount:
+                type: number
+              vat_amount:
+                type: number
+              transp_amount:
+                type: number
+              net_amount:
+                type: number
+
+    ProcessResponse:
+      type: object
+      properties:
+        res:
+          type: integer
+          description: Result flag (1 = success)
+          example: 1
+        err_code:
+          type: integer
+          description: Error code (0 = success)
+          example: 0
+        err_msg:
+          type: string
+          description: Error message (empty on success)
+          example: ""
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: Process ID for tracking
+              example: 12345
+
+    ErrorResponse:
+      type: object
+      properties:
+        res:
+          type: integer
+          description: Result flag (0 = error)
+          example: 0
+        err_code:
+          type: integer
+          description: Error code (non-zero indicates error)
+          example: 5
+        err_msg:
+          type: string
+          description: Error message
+          example: "Invalid username or password"
+        data:
+          type: object
+          description: Additional error details
+          additionalProperties: true
