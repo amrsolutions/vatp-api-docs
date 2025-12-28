@@ -108,8 +108,8 @@ Perfect if you **manage multiple companies** and need to operate on their behalf
 - [`DELETE /inv/delete`](./import-upload-invoices.md#delete-unsubmitted-invoices) - Delete unsubmitted invoices by ERP ID
 
 ### Process Monitoring
-- [`GET /job/read_proc_status`](./import-upload-invoices.md#monitor-process) - Check process status
-- [`GET /job/read_proc_data`](./import-upload-invoices.md#monitor-process) - Get detailed process data
+- [`GET /job/read_proc_status`](./polling-guide.md) - Check process status
+- [`GET /job/read_proc_data`](./polling-guide.md) - Get detailed process data
 
 💡 **Learn best practices:** [Polling Guide](./polling-guide.md) - Recommended polling intervals, exponential backoff, and error handling
 

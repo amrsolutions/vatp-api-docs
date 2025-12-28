@@ -106,7 +106,7 @@ POST https://<company>.vatportal.az/api/etx/import
 }
 ```
 
-The `id` field contains the process ID. Use this to monitor the download progress with the [Read Process Status](./import-upload-invoices.md#monitor-process) endpoint.
+The `id` field contains the process ID. Use this to monitor the download progress with the [`GET /job/read_proc_status`](./polling-guide.md) endpoint. See [Polling Best Practices](./polling-guide.md) for recommended implementation.
 
 ---
 

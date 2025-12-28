@@ -403,7 +403,7 @@ DELETE /api/etx/delete
 
 - [Import & Upload Invoices](./import-upload-invoices.md) - Create and upload invoices
 - [Download from E-taxes](./download-from-etaxes.md) - Download invoices from e-taxes
-- [Read Process Status](./import-upload-invoices.md#monitor-process) - Monitor process progress
+- [Polling Best Practices](./polling-guide.md) - Monitor process progress efficiently
 - [Error Codes](./error-codes.md) - Complete error reference
 
 ---

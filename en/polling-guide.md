@@ -4,7 +4,7 @@
 
 ## Overview
 
-Many VatPortal API operations are asynchronous, meaning they return a process ID immediately and continue working in the background. To check the status of these operations, you need to poll the [`GET /job/read_proc_status`](./import-upload-invoices.md#monitor-process) endpoint.
+Many VatPortal API operations are asynchronous, meaning they return a process ID immediately and continue working in the background. To check the status of these operations, you need to poll the `GET /job/read_proc_status` endpoint.
 
 This guide provides best practices for implementing efficient and reliable polling.
 
@@ -488,7 +488,7 @@ for (const batch of batches) {
 
 ### Use Process Data for Detailed Info
 
-For detailed progress information, use [`GET /job/read_proc_data`](./import-upload-invoices.md#read-process-data):
+For detailed progress information, use `GET /job/read_proc_data`:
 
 ```javascript
 async function getDetailedProgress(procId) {

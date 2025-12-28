@@ -4,7 +4,7 @@
 
 ## İcmal
 
-Bir çox VatPortal API əməliyyatları asinxrondur, yəni dərhal proses ID-si qaytarır və fonda işləməyə davam edir. Bu əməliyyatların statusunu yoxlamaq üçün [`GET /job/read_proc_status`](./import-upload-invoices.md#monitor-process) endpointindən istifadə etməlisiniz.
+Bir çox VatPortal API əməliyyatları asinxrondur, yəni dərhal proses ID-si qaytarır və fonda işləməyə davam edir. Bu əməliyyatların statusunu yoxlamaq üçün `GET /job/read_proc_status` endpointindən istifadə etməlisiniz.
 
 Bu bələdçi effektiv və etibarlı pollinqin tətbiqi üçün ən yaxşı təcrübələri təqdim edir.
 
@@ -488,7 +488,7 @@ for (const batch of batches) {
 
 ### Ətraflı Məlumat üçün Proses Məlumatından İstifadə Edin
 
-Ətraflı gedişat məlumatı üçün [`GET /job/read_proc_data`](./import-upload-invoices.md#read-process-data)-dan istifadə edin:
+Ətraflı gedişat məlumatı üçün `GET /job/read_proc_data`-dan istifadə edin:
 
 ```javascript
 async function getDetailedProgress(procId) {

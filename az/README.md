@@ -108,8 +108,8 @@ ERP sisteminizi birbaşa e-taxes.gov.az ilə birləşdirin. Qaimə-fakturaları 
 - [`DELETE /inv/delete`](./import-upload-invoices.md#delete-unsubmitted-invoices) - Təqdim edilməmiş qaimələri ERP ID-yə görə silmək
 
 ### Proses Monitorinqi
-- [`GET /job/read_proc_status`](./import-upload-invoices.md#monitor-process) - Proses statusunu yoxlamaq
-- [`GET /job/read_proc_data`](./import-upload-invoices.md#monitor-process) - Ətraflı proses məlumatlarını əldə etmək
+- [`GET /job/read_proc_status`](./polling-guide.md) - Proses statusunu yoxlamaq
+- [`GET /job/read_proc_data`](./polling-guide.md) - Ətraflı proses məlumatlarını əldə etmək
 
 💡 **Ən yaxşı təcrübələri öyrənin:** [Polling Bələdçisi](./polling-guide.md) - Tövsiyə olunan polling intervalları, eksponensial geri çəkilmə və xəta idarəetməsi
 

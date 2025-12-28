@@ -356,7 +356,7 @@ When `upload: true`, the process goes through these stages:
 5. **Signing** - Electronic signature (PIN2 required)
 6. **Complete** - Qaime number assigned
 
-Monitor progress using [Read Process Status](./read-process-status.md) endpoint.
+Monitor progress using the [`GET /job/read_proc_status`](./polling-guide.md) endpoint. See [Polling Best Practices](./polling-guide.md) for recommended implementation.
 
 ## Notes
 

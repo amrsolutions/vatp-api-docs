@@ -199,7 +199,7 @@ Massiv `[37, 43]` bu xüsusi qaimə üçün xəta kodlarını ehtiva edir:
 5. **İmzalama** - Elektron imza (PIN2 tələb olunur)
 6. **Tamamlama** - Qaime nömrəsi təyin edilir
 
-[Proses Statusunu Oxu](./read-process-status.md) endpointindən istifadə edərək tərəqqini izləyin.
+[`GET /job/read_proc_status`](./polling-guide.md) endpointindən istifadə edərək tərəqqini izləyin. Tövsiyə olunan tətbiq üçün [Polling Ən Yaxşı Təcrübələri](./polling-guide.md) baxın.
 
 ## Qeydlər
 
