@@ -102,22 +102,22 @@ Perfect if you **manage multiple companies** and need to operate on their behalf
 ## 📡 Available Endpoints
 
 ### Invoice Management
-- [`POST /api/inv/import_upload_invoices.php`](./import-upload-invoices.md#endpoint) - Import and upload invoices
-- [`GET /api/inv/read_invoices`](./import-upload-invoices.md#read-invoices-with-qaime-numbers) - Read invoices with qaime numbers
-- [`DELETE /api/inv/delete`](./import-upload-invoices.md#delete-unsubmitted-invoices) - Delete unsubmitted invoices by ERP ID
+- [`POST /inv/import_upload_invoices.php`](./import-upload-invoices.md#endpoint) - Import and upload invoices
+- [`GET /inv/read_invoices`](./import-upload-invoices.md#read-invoices-with-qaime-numbers) - Read invoices with qaime numbers
+- [`DELETE /inv/delete`](./import-upload-invoices.md#delete-unsubmitted-invoices) - Delete unsubmitted invoices by ERP ID
 
 ### Process Monitoring
-- [`GET /api/job/read_proc_status`](./import-upload-invoices.md#monitor-process) - Check process status
-- [`GET /api/job/read_proc_data`](./import-upload-invoices.md#monitor-process) - Get detailed process data
+- [`GET /job/read_proc_status`](./import-upload-invoices.md#monitor-process) - Check process status
+- [`GET /job/read_proc_data`](./import-upload-invoices.md#monitor-process) - Get detailed process data
 
 ### E-taxes Integration
-- [`POST /api/etx/import`](./download-from-etaxes.md#step-1-start-download-process) - Download qaimes from online system (v7.0)
-- [`GET /api/etx/read_invoices`](./download-from-etaxes.md#step-2-read-downloaded-invoice-data) - Read raw qaimes data (v7.0+)
-- [`DELETE /api/etx/delete`](./delete-etaxes-invoices.md#endpoint) - Delete qaimes by serie/number
+- [`POST /etx/import`](./download-from-etaxes.md#step-1-start-download-process) - Download qaimes from online system (v7.0)
+- [`GET /etx/read_invoices`](./download-from-etaxes.md#step-2-read-downloaded-invoice-data) - Read raw qaimes data (v7.0+)
+- [`DELETE /etx/delete`](./delete-etaxes-invoices.md#endpoint) - Delete qaimes by serie/number
 
 ### Authentication
-- [`GET /api/auth/reset_start.php`](./authentication.md#step-1-initiate-token-renewal) - Initiate token renewal
-- [`POST /api/auth/reset_confirm.php`](./authentication.md#step-2-confirm-token-renewal) - Confirm token renewal
+- [`GET /auth/reset_start.php`](./authentication.md#step-1-initiate-token-renewal) - Initiate token renewal
+- [`POST /auth/reset_confirm.php`](./authentication.md#step-2-confirm-token-renewal) - Confirm token renewal
 
 ## 🌍 Supported Invoice Types
 

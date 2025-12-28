@@ -70,6 +70,7 @@ curl -X POST https://yourcompany.vatportal.az/api/inv/import_upload_invoices.php
 
 ```json
 {
+  "res": 1,
   "err_code": 0,
   "err_msg": "",
   "data": {
@@ -83,7 +84,7 @@ curl -X POST https://yourcompany.vatportal.az/api/inv/import_upload_invoices.php
 ## Addım 3: Proses Statusunu Yoxlayın
 
 ```bash
-curl -X POST https://yourcompany.vatportal.az/api/job/read_proc_status \
+curl -X GET https://yourcompany.vatportal.az/api/job/read_proc_status \
   -H "Content-Type: application/json" \
   -d '{
     "username": "istifadəçi_adınız",

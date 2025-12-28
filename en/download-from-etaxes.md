@@ -97,6 +97,7 @@ POST https://<company>.vatportal.az/api/etx/import
 
 ```json
 {
+  "res": 1,
   "err_code": 0,
   "err_msg": "",
   "data": {

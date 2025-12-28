@@ -129,6 +129,7 @@ curl -X DELETE https://company.vatportal.az/api/etx/delete \
 
 ```json
 {
+  "res": 1,
   "err_code": 0,
   "err_msg": "",
   "data": {
@@ -163,7 +164,7 @@ Silmə asinxron əməliyyat olduğundan, gedişatı izləmək üçün proses ID-
 ### Proses Statusunu Yoxlayın
 
 ```bash
-curl -X POST https://company.vatportal.az/api/job/read_proc_status \
+curl -X GET https://company.vatportal.az/api/job/read_proc_status \
   -H "Content-Type: application/json" \
   -d '{
     "username": "istifadəçi_adım",
@@ -213,7 +214,7 @@ curl -X DELETE https://company.vatportal.az/api/etx/delete \
 # Cavab: {"err_code": 0, "data": {"id": 123}}
 
 # Addım 2: Silmə gedişatını izləyin
-curl -X POST https://company.vatportal.az/api/job/read_proc_status \
+curl -X GET https://company.vatportal.az/api/job/read_proc_status \
   -H "Content-Type: application/json" \
   -d '{
     "username": "istifadəçim",

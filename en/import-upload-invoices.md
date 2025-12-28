@@ -81,6 +81,7 @@ POST /api/inv/import_upload_invoices.php
 
 ```json
 {
+  "res": 1,
   "err_code": 0,
   "err_msg": "",
   "data": {
@@ -133,6 +134,7 @@ curl -X POST https://company.vatportal.az/api/inv/import_upload_invoices.php \
 **Response:**
 ```json
 {
+  "res": 1,
   "err_code": 0,
   "err_msg": "",
   "data": {

@@ -129,6 +129,7 @@ curl -X DELETE https://company.vatportal.az/api/etx/delete \
 
 ```json
 {
+  "res": 1,
   "err_code": 0,
   "err_msg": "",
   "data": {
@@ -163,7 +164,7 @@ Since deletion is an asynchronous operation, use the process ID to monitor progr
 ### Check Process Status
 
 ```bash
-curl -X POST https://company.vatportal.az/api/job/read_proc_status \
+curl -X GET https://company.vatportal.az/api/job/read_proc_status \
   -H "Content-Type: application/json" \
   -d '{
     "username": "myusername",
@@ -213,7 +214,7 @@ curl -X DELETE https://company.vatportal.az/api/etx/delete \
 # Response: {"err_code": 0, "data": {"id": 123}}
 
 # Step 2: Monitor deletion progress
-curl -X POST https://company.vatportal.az/api/job/read_proc_status \
+curl -X GET https://company.vatportal.az/api/job/read_proc_status \
   -H "Content-Type: application/json" \
   -d '{
     "username": "myuser",
