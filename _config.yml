@@ -8,7 +8,7 @@ url: "https://amrsolutions.github.io"
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-minimal
+remote_theme: just-the-docs/just-the-docs
 
 # Plugins
 plugins:
