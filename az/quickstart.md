@@ -2,12 +2,22 @@
 
 VatPortal API ilə 5 dəqiqədə işə başlayın.
 
+## İnteqrasiya Növünüzü Seçin
+
+**Siz müəssisə müştərissiniz, yoxsa partner?**
+
+- **Müəssisə Müştərisi** (Tək şirkət) → Aşağıda davam edin
+- **Partner** (Bir neçə müştəri) → [Partner İnteqrasiya Bələdçisi](./partner-integration.md)-nə baxın
+
+Bu bələdçi **müəssisə müştərisi inteqrasiyasını** əhatə edir. Partnerlər bütün API çağırışlarında `phone` parametrini tələb edən [Partner İnteqrasiya Bələdçisi](./partner-integration.md)-ni izləməlidirlər.
+
 ## İlkin Tələblər
 
 - Aktiv VatPortal abunəliyi
 - API icazə məlumatları (istifadəçi adı/parol və ya token)
-- Portalda qeydiyyatdan keçmiş ASAN telefon nömrəsi
+- Portalda qeydiyyatdan keçmiş ASAN telefon nömrəsi (e-taxes əməliyyatları üçün)
 - Şirkət VÖEN nömrəsi
+- Sizin xüsusi subdomeniniz: `yourcompany.vatportal.az`
 
 ## Addım 1: İcazə Məlumatlarınızı Əldə Edin
 
@@ -227,16 +237,24 @@ curl -X POST https://yourcompany.vatportal.az/api/inv/import_upload_invoices.php
 
 ## Növbəti Addımlar
 
-- 📖 [Tam autentifikasiya bələdçisini oxuyun](./authentication.md)
-- 🔍 [Əsas endpointi araşdırın](./import-upload-invoices.md)
-- 💡 [Real nümunələrə baxın](./examples.md)
-- ⚠️ [Xəta kodları arayışı](./error-codes.md)
+### Daha Çox Öyrənin
+- 📖 [Autentifikasiya Bələdçisi](./authentication.md) - Token idarəetməsi və təhlükəsizlik
+- 🔍 [Qaimələri İdxal və Yükləmək](./import-upload-invoices.md) - Tam endpoint arayışı
+- 💡 [Nümunələr](./examples.md) - Real istifadə halları
+- ⚠️ [Xəta Kodları](./error-codes.md) - Problemlərin həlli bələdçisi
+
+### Əlavə Xüsusiyyətlər
+- 📥 [E-taxes-dan Endirmə](./download-from-etaxes.md) - e-taxes.gov.az-dan qaimələri əldə edin
+- 🗑️ [E-taxes Qaimələrini Silmək](./delete-etaxes-invoices.md) - Portal və e-taxes-dan qaimələri silin
+- 📋 [Qaimə Növləri](./invoice-types.md) - Bütün dəstəklənən qaimə növləri
+- 🤝 [Partner İnteqrasiyası](./partner-integration.md) - Çox-müştərili inteqrasiya bələdçisi
 
 ## Köməyə ehtiyacınız var?
 
-- Autentifikasiyada problem? → [Autentifikasiya Bələdçisi](./authentication.md)
-- Qaimə validasiya xətaları? → [Xəta Kodları](./error-codes.md)
-- Tam nümunələr istəyirsiniz? → [Nümunələr](./examples.md)
+- **Autentifikasiyada problem?** → [Autentifikasiya Bələdçisi](./authentication.md)
+- **Qaimə validasiya xətaları?** → [Xəta Kodları](./error-codes.md)
+- **Tam nümunələr istəyirsiniz?** → [Nümunələr](./examples.md)
+- **Çox-müştərili inteqrasiya?** → [Partner Bələdçisi](./partner-integration.md)
 
 ---
 

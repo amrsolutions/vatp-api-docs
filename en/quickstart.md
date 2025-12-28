@@ -2,12 +2,22 @@
 
 Get started with VatPortal API in 5 minutes.
 
+## Choose Your Integration Type
+
+**Are you an enterprise customer or a partner?**
+
+- **Enterprise Customer** (Single company) → Continue below
+- **Partner** (Multiple customers) → See [Partner Integration Guide](./partner-integration.md)
+
+This guide covers **enterprise customer integration**. Partners should follow the [Partner Integration Guide](./partner-integration.md) which requires the `phone` parameter in all API calls.
+
 ## Prerequisites
 
 - Active VatPortal subscription
 - API credentials (username/password or token)
-- ASAN phone number registered in portal
+- ASAN phone number registered in portal (for e-taxes operations)
 - Company VOEN number
+- Your dedicated subdomain: `yourcompany.vatportal.az`
 
 ## Step 1: Get Your Credentials
 
@@ -227,16 +237,24 @@ curl -X POST https://yourcompany.vatportal.az/api/inv/import_upload_invoices.php
 
 ## Next Steps
 
-- 📖 [Read full authentication guide](./authentication.md)
-- 🔍 [Explore main endpoint](./import-upload-invoices.md)
-- 💡 [Check real-world examples](./examples.md)
-- ⚠️ [Error codes reference](./error-codes.md)
+### Learn More
+- 📖 [Authentication Guide](./authentication.md) - Token management and security
+- 🔍 [Import & Upload Invoices](./import-upload-invoices.md) - Complete endpoint reference
+- 💡 [Examples](./examples.md) - Real-world use cases
+- ⚠️ [Error Codes](./error-codes.md) - Troubleshooting guide
+
+### Additional Features
+- 📥 [Download from E-taxes](./download-from-etaxes.md) - Retrieve invoices from e-taxes.gov.az
+- 🗑️ [Delete E-taxes Invoices](./delete-etaxes-invoices.md) - Delete invoices from portal and e-taxes
+- 📋 [Invoice Types](./invoice-types.md) - All supported invoice types
+- 🤝 [Partner Integration](./partner-integration.md) - Multi-customer integration guide
 
 ## Need Help?
 
-- Stuck on authentication? → [Authentication Guide](./authentication.md)
-- Invoice validation errors? → [Error Codes](./error-codes.md)
-- Want complete examples? → [Examples](./examples.md)
+- **Stuck on authentication?** → [Authentication Guide](./authentication.md)
+- **Invoice validation errors?** → [Error Codes](./error-codes.md)
+- **Want complete examples?** → [Examples](./examples.md)
+- **Multi-customer integration?** → [Partner Guide](./partner-integration.md)
 
 ---
 
