@@ -1,12 +1,83 @@
 # VatPortal API Sənədləşməsi
 
-**Versiya:** 8.0
-**Son Yenilənmə:** 7 Avqust 2025
-**Əsas URL:** `https://<şirkət>.vatportal.az/api`
+**Azərbaycanın e-taxes iş axınınızı avtomatlaşdırın**
 
-## 🚀 VatPortal API nədir?
+ERP sisteminizi birbaşa e-taxes.gov.az ilə birləşdirin. Qaimə-fakturaları yükləyin, elektron imzalayın və qaime nömrələrini avtomatik əldə edin.
 
-VatPortal API üçüncü tərəf ERP sistemlərinə Azərbaycanın e-taxes.gov.az sistemi ilə proqramlı şəkildə əlaqə qurmağa imkan verir. Qaimə-fakturaları yükləyin, onları elektron imzalayın, qaime nömrələrini əldə edin və vergi sənədlərini RESTful JSON API vasitəsilə idarə edin.
+---
+
+## 👋 VatPortal API ilə yenisiz?
+
+**5 dəqiqədə başlayın** • Mürəkkəb quraşdırma yoxdur • İstehsal üçün hazırdır
+
+<div align="center">
+
+[**🚀 Sürətli Başlanğıc Bələdçisi**](./quickstart.md) &nbsp;&nbsp;&nbsp; [**🤝 Mən Partnerəm**](./partner-integration.md) &nbsp;&nbsp;&nbsp; [**📞 Dəstək Alın**](#dəstək)
+
+</div>
+
+---
+
+## İnteqrasiya Yolunuzu Seçin
+
+### 🏢 Müəssisə Müştərisi
+**Tək şirkət inteqrasiyası** • Birbaşa idarəetmə • Sadə autentifikasiya
+
+**Bir şirkətin ERP sistemini** e-taxes ilə inteqrasiya edirsinizsə idealdır.
+
+**Sizin subdomeniniz:** `şirkətiniz.vatportal.az`
+
+[**Müəssisə İnteqrasiyasına Başlayın →**](./quickstart.md)
+
+### 🤝 Partner / Xidmət Təminatçısı
+**Çox-müştərili inteqrasiya** • Toplu əməliyyatlar • Müştəri seqreqasiyası
+
+**Bir neçə şirkəti idarə edirsinizsə** və onların adından əməliyyat aparmaq lazımdırsa idealdır.
+
+**Sizin subdomeniniz:** `partneradınız.vatportal.az` • `phone` parametri tələb olunur
+
+[**Partner İnteqrasiyasına Başlayın →**](./partner-integration.md)
+
+---
+
+## 🎯 Nə etmək istəyirsiniz?
+
+**Ən çox istifadə olunan tapşırıqlar:**
+
+- **📤 Qaimələri e-taxes-a yükləmək** → [İdxal və Yükləmə Bələdçisi](./import-upload-invoices.md)
+- **📥 E-taxes-dan qaimələri endirmək** → [Endirmə Bələdçisi](./download-from-etaxes.md)
+- **🔐 Autentifikasiya və tokenlər quraşdırmaq** → [Autentifikasiya Quraşdırması](./authentication.md)
+- **⚠️ Xətaları aradan qaldırmaq** → [Xəta Kodları Məlumatı](./error-codes.md)
+- **📋 Real nümunələr görmək** → [Kod Nümunələri](./examples.md)
+
+---
+
+## 🔑 Əsas Xüsusiyyətlər
+
+- ✅ Qaimə-fakturaları e-taxes.gov.az-a idxal və yükləmə
+- ✅ Elektron imza dəstəyi
+- ✅ Qaime nömrələrini və qaimə məlumatlarını əldə etmə
+- ✅ Onlayn sistemdən qaimələri endirmə
+- ✅ Status və qaimə növünə görə təkmilləşdirilmiş filtrasiya (v8.0)
+- ✅ Qaralama və gözləyən qaimələri silmə
+- ✅ 2FA yeniləməsi ilə token əsaslı autentifikasiya
+- ✅ 18% ƏDV və sadələşdirilmiş vergitutma dəstəyi
+
+## 🆕 v8.0-da Yeniliklər
+
+**Buraxılış:** 7 Avqust 2025
+
+- Endirmə metoduna **qaimə statusuna görə** filtrasiya əlavə edildi
+- Endirmə metoduna **qaimə növü/tipinə görə** filtrasiya əlavə edildi
+- `inc_status` və `exc_status` parametrləri təkmilləşdirildi
+- `inc_kinds` və `exc_kinds` parametrləri təkmilləşdirildi
+- Toplu qaimə endirmələri üzərində daha yaxşı nəzarət
+
+[Tam dəyişikliklər jurnalı →](./CHANGELOG.md)
+
+---
+
+**Versiya:** 8.0 • **Son Yenilənmə:** 7 Avqust 2025 • **Əsas URL:** `https://<şirkət>.vatportal.az/api`
 
 ## 📋 Sənədləşmə Naviqasiyası
 
@@ -30,17 +101,6 @@ VatPortal API üçüncü tərəf ERP sistemlərinə Azərbaycanın e-taxes.gov.a
 ### 📚 Əlavə Resurslar
 - [**Dəyişikliklər Jurnalı**](./CHANGELOG.md) - Versiya tarixi və buraxılış qeydləri
 - [**Sənədləşmə Bələdçisi**](./DOCUMENTATION_GUIDE.md) - Sənədləşməyə töhfə vermək üçün bələdçi
-
-## 🔑 Əsas Xüsusiyyətlər
-
-- ✅ Qaimə-fakturaları e-taxes.gov.az-a idxal və yükləmə
-- ✅ Elektron imza dəstəyi
-- ✅ Qaime nömrələrini və qaimə məlumatlarını əldə etmə
-- ✅ Onlayn sistemdən qaimələri endirmə
-- ✅ Status və qaimə növünə görə təkmilləşdirilmiş filtrasiya (v8.0)
-- ✅ Qaralama və gözləyən qaimələri silmə
-- ✅ 2FA yeniləməsi ilə token əsaslı autentifikasiya
-- ✅ 18% ƏDV və sadələşdirilmiş vergitutma dəstəyi
 
 ## 📡 Mövcud Endpointlər
 
@@ -107,18 +167,6 @@ Bütün endpointlər standart strukturla JSON qaytarır:
 - `err_code`: Xəta kodu (0 = xəta yoxdur, [xəta kodlarına](./error-codes.md) baxın)
 - `err_msg`: İnsan oxuya bilən xəta mesajı
 - `data`: Cavab yükü
-
-## 🆕 v8.0-da Yeniliklər
-
-**Buraxılış:** 7 Avqust 2025
-
-- Endirmə metoduna **qaimə statusuna görə** filtrasiya əlavə edildi
-- Endirmə metoduna **qaimə növünə/tipinə görə** filtrasiya əlavə edildi
-- Təkmilləşdirilmiş `inc_status` və `exc_status` parametrləri
-- Təkmilləşdirilmiş `inc_kinds` və `exc_kinds` parametrləri
-- Toplu qaimə endirmələri üzərində daha yaxşı nəzarət
-
-[Tam dəyişikliklər jurnalı →](./CHANGELOG.md)
 
 ## 🛠️ SDK-lar və Alətlər
 

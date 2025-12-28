@@ -1,12 +1,83 @@
 # VatPortal API Documentation
 
-**Version:** 8.0  
-**Last Updated:** August 7, 2025  
-**Base URL:** `https://<company>.vatportal.az/api`
+**Automate your Azerbaijan e-taxes workflow**
 
-## 🚀 What is VatPortal API?
+Connect your ERP system directly to e-taxes.gov.az. Upload invoices, sign electronically, and retrieve qaime numbers automatically.
 
-VatPortal API enables third-party ERP systems to programmatically interact with Azerbaijan's e-taxes.gov.az system. Upload invoices, sign them electronically, retrieve qaime numbers, and manage tax documents through a RESTful JSON API.
+---
+
+## 👋 New to VatPortal API?
+
+**Get started in 5 minutes** • No complex setup • Production-ready
+
+<div align="center">
+
+[**🚀 Quick Start Guide**](./quickstart.md) &nbsp;&nbsp;&nbsp; [**🤝 I'm a Partner**](./partner-integration.md) &nbsp;&nbsp;&nbsp; [**📞 Get Support**](#support)
+
+</div>
+
+---
+
+## Choose Your Integration Path
+
+### 🏢 Enterprise Customer
+**Single company integration** • Direct control • Simple authentication
+
+Perfect if you're integrating **one company's ERP** with e-taxes.
+
+**Your subdomain:** `yourcompany.vatportal.az`
+
+[**Start Enterprise Integration →**](./quickstart.md)
+
+### 🤝 Partner / Service Provider
+**Multi-customer integration** • Bulk operations • Customer segregation
+
+Perfect if you **manage multiple companies** and need to operate on their behalf.
+
+**Your subdomain:** `partnername.vatportal.az` • Requires `phone` parameter
+
+[**Start Partner Integration →**](./partner-integration.md)
+
+---
+
+## 🎯 What do you want to do?
+
+**Most common tasks:**
+
+- **📤 Upload invoices to e-taxes** → [Import & Upload Guide](./import-upload-invoices.md)
+- **📥 Download invoices from e-taxes** → [Download Guide](./download-from-etaxes.md)
+- **🔐 Setup authentication & tokens** → [Authentication Setup](./authentication.md)
+- **⚠️ Troubleshoot errors** → [Error Codes Reference](./error-codes.md)
+- **📋 See real examples** → [Code Examples](./examples.md)
+
+---
+
+## 🔑 Key Features
+
+- ✅ Import and upload invoices to e-taxes.gov.az
+- ✅ Electronic signature support
+- ✅ Retrieve qaime numbers and invoice data
+- ✅ Download invoices from online system
+- ✅ Advanced filtering by status and invoice type (v8.0)
+- ✅ Delete draft and pending invoices
+- ✅ Token-based authentication with 2FA renewal
+- ✅ Support for 18% VAT and simplified taxation
+
+## 🆕 What's New in v8.0
+
+**Released:** August 7, 2025
+
+- Added filtering by **invoice status** to download method
+- Added filtering by **invoice kind/type** to download method
+- Enhanced `inc_status` and `exc_status` parameters
+- Enhanced `inc_kinds` and `exc_kinds` parameters
+- Better control over bulk invoice downloads
+
+[Full changelog →](./CHANGELOG.md)
+
+---
+
+**Version:** 8.0 • **Last Updated:** August 7, 2025 • **Base URL:** `https://<company>.vatportal.az/api`
 
 ## 📋 Documentation Navigation
 
@@ -30,17 +101,6 @@ VatPortal API enables third-party ERP systems to programmatically interact with 
 ### 📚 Additional Resources
 - [**Changelog**](./CHANGELOG.md) - Version history and release notes
 - [**Documentation Guide**](./DOCUMENTATION_GUIDE.md) - How to contribute to documentation
-
-## 🔑 Key Features
-
-- ✅ Import and upload invoices to e-taxes.gov.az
-- ✅ Electronic signature support
-- ✅ Retrieve qaime numbers and invoice data
-- ✅ Download invoices from online system
-- ✅ Advanced filtering by status and invoice type (v8.0)
-- ✅ Delete draft and pending invoices
-- ✅ Token-based authentication with 2FA renewal
-- ✅ Support for 18% VAT and simplified taxation
 
 ## 📡 Available Endpoints
 
@@ -107,18 +167,6 @@ All endpoints return JSON with standard structure:
 - `err_code`: Error code (0 = no error, see [error codes](./error-codes.md))
 - `err_msg`: Human-readable error message
 - `data`: Response payload
-
-## 🆕 What's New in v8.0
-
-**Released:** August 7, 2025
-
-- Added filtering by **invoice status** to download method
-- Added filtering by **invoice kind/type** to download method
-- Enhanced `inc_status` and `exc_status` parameters
-- Enhanced `inc_kinds` and `exc_kinds` parameters
-- Better control over bulk invoice downloads
-
-[Full changelog →](./CHANGELOG.md)
 
 ## 🛠️ SDKs and Tools
 
