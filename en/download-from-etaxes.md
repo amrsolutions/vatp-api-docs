@@ -257,6 +257,163 @@ Use `inc_kinds` or `exc_kinds` with these values:
 
 ---
 
+## Filter Usage Examples
+
+### Example 1: Download Only Approved Invoices
+
+Download only invoices that have been approved, excluding those waiting for approval or updates:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "myuser",
+    "password": "mypass",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 0,
+    "inc_status": "approved"
+  }'
+```
+
+### Example 2: Exclude Canceled and Deleted Invoices
+
+Download all invoices except those that have been canceled or deleted:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "myuser",
+    "password": "mypass",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 1,
+    "exc_status": "canceled,deleted,deletedBySystem"
+  }'
+```
+
+### Example 3: Download Only Standard Invoices
+
+Download only standard goods/services invoices, excluding all other types:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "myuser",
+    "password": "mypass",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 0,
+    "inc_kinds": "defaultInvoice"
+  }'
+```
+
+### Example 4: Exclude All Return-Related Invoices
+
+Download all invoices except various types of returns:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "myuser",
+    "password": "mypass",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 0,
+    "exc_kinds": "returnInvoice,returnByAgent,returnRecycled"
+  }'
+```
+
+### Example 5: Combine Status and Type Filters
+
+Download only approved standard invoices and advance invoices:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "myuser",
+    "password": "mypass",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 1,
+    "inc_status": "approved,approvedBySystem",
+    "inc_kinds": "defaultInvoice,advanceInvoice"
+  }'
+```
+
+### Example 6: Download Pending Approvals (Incoming Invoices)
+
+Get all incoming invoices that are waiting for your approval:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "myuser",
+    "password": "mypass",
+    "phone": "994501234567",
+    "date_from": "01.12.2024",
+    "date_to": "31.12.2024",
+    "dir": 0,
+    "inc_status": "onApproval,onApprovalEdited"
+  }'
+```
+
+### Example 7: Export Invoices (No Returns, No Canceled)
+
+Download export invoices that are active (not canceled or deleted):
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "myuser",
+    "password": "mypass",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.03.2025",
+    "dir": 1,
+    "inc_kinds": "exportNoteInvoice",
+    "exc_status": "canceled,deleted,deletedBySystem,deactivated"
+  }'
+```
+
+### Filter Priority Rules
+
+**Important:** When using filters, remember:
+
+1. **`inc_*` parameters override `exc_*` parameters**
+   - If both `inc_status` and `exc_status` are provided, only `inc_status` is used
+   - If both `inc_kinds` and `exc_kinds` are provided, only `inc_kinds` is used
+
+2. **Example of override behavior:**
+   ```json
+   {
+     "inc_status": "approved",
+     "exc_status": "canceled"
+   }
+   ```
+   Result: Only `inc_status` is applied, `exc_status` is ignored. You will get only approved invoices.
+
+3. **Comma-separated values:**
+   ```json
+   {
+     "inc_status": "approved,onApproval,updateApproval"
+   }
+   ```
+   Result: Invoices matching ANY of these statuses will be included (OR logic).
+
+---
+
 ## Complete Workflow Example
 
 ```bash

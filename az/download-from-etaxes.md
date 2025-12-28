@@ -257,6 +257,163 @@ GET https://<company>.vatportal.az/api/etx/read_invoices
 
 ---
 
+## Filtrasiya İstifadə Nümunələri
+
+### Nümunə 1: Yalnız Təsdiqlənmiş Qaimələri Yükləyin
+
+Yalnız təsdiqlənmiş qaimələri yükləyin, təsdiq və ya yeniləmə gözləyənləri çıxararaq:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "istifadəçim",
+    "password": "parolum",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 0,
+    "inc_status": "approved"
+  }'
+```
+
+### Nümunə 2: Ləğv Edilmiş və Silinmiş Qaimələri Çıxarın
+
+Ləğv edilmiş və ya silinmiş qaimələr istisna olmaqla bütün qaimələri yükləyin:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "istifadəçim",
+    "password": "parolum",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 1,
+    "exc_status": "canceled,deleted,deletedBySystem"
+  }'
+```
+
+### Nümunə 3: Yalnız Standart Qaimələri Yükləyin
+
+Yalnız standart mal/xidmət qaimələrini yükləyin, digər növləri çıxararaq:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "istifadəçim",
+    "password": "parolum",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 0,
+    "inc_kinds": "defaultInvoice"
+  }'
+```
+
+### Nümunə 4: Bütün Qaytarılma Qaimələrini Çıxarın
+
+Müxtəlif qaytarılma növləri istisna olmaqla bütün qaimələri yükləyin:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "istifadəçim",
+    "password": "parolum",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 0,
+    "exc_kinds": "returnInvoice,returnByAgent,returnRecycled"
+  }'
+```
+
+### Nümunə 5: Status və Növ Filtrlərini Birləşdirin
+
+Yalnız təsdiqlənmiş standart və avans qaimələrini yükləyin:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "istifadəçim",
+    "password": "parolum",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 1,
+    "inc_status": "approved,approvedBySystem",
+    "inc_kinds": "defaultInvoice,advanceInvoice"
+  }'
+```
+
+### Nümunə 6: Təsdiq Gözləyən Qaimələri Yükləyin (Daxil Olan)
+
+Təsdiqlənmənizi gözləyən bütün daxil olan qaimələri əldə edin:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "istifadəçim",
+    "password": "parolum",
+    "phone": "994501234567",
+    "date_from": "01.12.2024",
+    "date_to": "31.12.2024",
+    "dir": 0,
+    "inc_status": "onApproval,onApprovalEdited"
+  }'
+```
+
+### Nümunə 7: İxrac Qaimələri (Qaytarılma və Ləğv Edilməmiş)
+
+Aktiv (ləğv edilməmiş və silinməmiş) ixrac qaimələrini yükləyin:
+
+```bash
+curl -X POST https://company.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "istifadəçim",
+    "password": "parolum",
+    "phone": "994501234567",
+    "date_from": "01.01.2025",
+    "date_to": "31.03.2025",
+    "dir": 1,
+    "inc_kinds": "exportNoteInvoice",
+    "exc_status": "canceled,deleted,deletedBySystem,deactivated"
+  }'
+```
+
+### Filtrasiya Prioritet Qaydaları
+
+**Vacib:** Filtrlərdən istifadə edərkən nəzərə alın:
+
+1. **`inc_*` parametrləri `exc_*` parametrlərini üstələyir**
+   - Həm `inc_status`, həm də `exc_status` təqdim edilərsə, yalnız `inc_status` istifadə olunur
+   - Həm `inc_kinds`, həm də `exc_kinds` təqdim edilərsə, yalnız `inc_kinds` istifadə olunur
+
+2. **Üstələmə davranışı nümunəsi:**
+   ```json
+   {
+     "inc_status": "approved",
+     "exc_status": "canceled"
+   }
+   ```
+   Nəticə: Yalnız `inc_status` tətbiq olunur, `exc_status` nəzərə alınmır. Yalnız təsdiqlənmiş qaimələri əldə edəcəksiniz.
+
+3. **Vergüllə ayrılmış dəyərlər:**
+   ```json
+   {
+     "inc_status": "approved,onApproval,updateApproval"
+   }
+   ```
+   Nəticə: Bu statuslardan HƏR HANSİ BİRİNƏ uyğun gələn qaimələr daxil ediləcək (VƏ YA məntiqi).
+
+---
+
 ## Tam İş Axını Nümunəsi
 
 ```bash

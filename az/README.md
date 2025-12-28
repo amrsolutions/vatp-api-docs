@@ -102,22 +102,22 @@ ERP sisteminizi birbaşa e-taxes.gov.az ilə birləşdirin. Qaimə-fakturaları 
 ## 📡 Mövcud Endpointlər
 
 ### Qaimə İdarəetməsi
-- [`POST /inv/import_upload_invoices.php`](./import-upload-invoices.md#endpoint) - Qaimələri idxal və yükləmə
-- [`GET /inv/read_invoices`](./import-upload-invoices.md#read-invoices-with-qaime-numbers) - Qaime nömrələri ilə qaimələri oxumaq
-- [`DELETE /inv/delete`](./import-upload-invoices.md#delete-unsubmitted-invoices) - Təqdim edilməmiş qaimələri ERP ID-yə görə silmək
+- [`POST /api/inv/import_upload_invoices.php`](./import-upload-invoices.md#endpoint) - Qaimələri idxal və yükləmə
+- [`GET /api/inv/read_invoices`](./import-upload-invoices.md#read-invoices-with-qaime-numbers) - Qaime nömrələri ilə qaimələri oxumaq
+- [`DELETE /api/inv/delete`](./import-upload-invoices.md#delete-unsubmitted-invoices) - Təqdim edilməmiş qaimələri ERP ID-yə görə silmək
 
 ### Proses Monitorinqi
-- [`GET /job/read_proc_status`](./import-upload-invoices.md#monitor-process) - Proses statusunu yoxlamaq
-- [`GET /job/read_proc_data`](./import-upload-invoices.md#monitor-process) - Ətraflı proses məlumatlarını əldə etmək
+- [`GET /api/job/read_proc_status`](./import-upload-invoices.md#monitor-process) - Proses statusunu yoxlamaq
+- [`GET /api/job/read_proc_data`](./import-upload-invoices.md#monitor-process) - Ətraflı proses məlumatlarını əldə etmək
 
 ### E-taxes İnteqrasiyası
-- [`POST /etx/import`](./download-from-etaxes.md#addım-1-yükləmə-prosesini-başladın) - Onlayn sistemdən qaimələri endirmək (v7.0)
-- [`GET /etx/read_invoices`](./download-from-etaxes.md#addım-2-yüklənmiş-qaimə-məlumatlarını-oxuyun) - Xam qaime məlumatlarını oxumaq (v7.0+)
-- [`DELETE /etx/delete`](./delete-etaxes-invoices.md#endpoint) - Qaimələri seriya/nömrəyə görə silmək
+- [`POST /api/etx/import`](./download-from-etaxes.md#addım-1-yükləmə-prosesini-başladın) - Onlayn sistemdən qaimələri endirmək (v7.0)
+- [`GET /api/etx/read_invoices`](./download-from-etaxes.md#addım-2-yüklənmiş-qaimə-məlumatlarını-oxuyun) - Xam qaime məlumatlarını oxumaq (v7.0+)
+- [`DELETE /api/etx/delete`](./delete-etaxes-invoices.md#endpoint) - Qaimələri seriya/nömrəyə görə silmək
 
 ### Autentifikasiya
-- [`GET /auth/reset_start.php`](./authentication.md#addım-1-token-yeniləməsini-başladın) - Token yeniləməsini başlatmaq
-- [`POST /auth/reset_confirm.php`](./authentication.md#addım-2-token-yeniləməsini-təsdiq-edin) - Token yeniləməsini təsdiqləmək
+- [`GET /api/auth/reset_start.php`](./authentication.md#addım-1-token-yeniləməsini-başladın) - Token yeniləməsini başlatmaq
+- [`POST /api/auth/reset_confirm.php`](./authentication.md#addım-2-token-yeniləməsini-təsdiq-edin) - Token yeniləməsini təsdiqləmək
 
 ## 🌍 Dəstəklənən Qaimə Növləri
 
