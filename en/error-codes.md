@@ -8,7 +8,7 @@ These errors apply to all endpoints:
 
 | Code | Error | Description | Fix |
 |------|-------|-------------|-----|
-| `1` | Invalid Request Method | Request must use POST | Use `POST` instead of `GET` |
+| `1` | Invalid Request Method | Request must use correct HTTP method | Use `POST` for write operations, `GET` for read operations |
 | `2` | Invalid Content-Type | Header must be `application/json` | Set `Content-Type: application/json` |
 | `3` | Missing Root Elements | Required JSON fields missing | Check request structure |
 | `4` | Empty Credentials | Username or password is empty | Provide valid credentials |
@@ -111,6 +111,7 @@ These errors indicate problems with individual line items:
 **Error:**
 ```json
 {
+  "res": 0,
   "err_code": 5,
   "err_msg": ""
 }
@@ -127,7 +128,9 @@ These errors indicate problems with individual line items:
 **Error:**
 ```json
 {
+  "res": 0,
   "err_code": 14,
+  "err_msg": "",
   "data": {
     "invoices": [[37, 43]]
   }
@@ -170,7 +173,9 @@ These errors indicate problems with individual line items:
 **Error:**
 ```json
 {
+  "res": 0,
   "err_code": 14,
+  "err_msg": "",
   "data": {
     "invoices": [[20]]
   }

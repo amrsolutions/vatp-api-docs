@@ -8,7 +8,7 @@ Bu xətalar bütün endpointlər üçün tətbiq olunur:
 
 | Kod | Xəta | Təsvir | Həll |
 |-----|------|--------|------|
-| `1` | Yanlış Sorğu Metodu | Sorğu POST istifadə etməlidir | `GET` əvəzinə `POST` istifadə edin |
+| `1` | Yanlış Sorğu Metodu | Sorğu düzgün HTTP metodu istifadə etməlidir | Yazma əməliyyatları üçün `POST`, oxuma əməliyyatları üçün `GET` istifadə edin |
 | `2` | Yanlış Content-Type | Başlıq `application/json` olmalıdır | `Content-Type: application/json` təyin edin |
 | `3` | Kök Elementlər Çatışmır | Tələb olunan JSON sahələri yoxdur | Sorğu strukturunu yoxlayın |
 | `4` | Boş İcazə Məlumatları | İstifadəçi adı və ya parol boşdur | Etibarlı icazə məlumatları təmin edin |
@@ -111,6 +111,7 @@ Bu xətalar ayrı-ayrı sətir məhsulları ilə problemləri göstərir:
 **Xəta:**
 ```json
 {
+  "res": 0,
   "err_code": 5,
   "err_msg": ""
 }
@@ -127,7 +128,9 @@ Bu xətalar ayrı-ayrı sətir məhsulları ilə problemləri göstərir:
 **Xəta:**
 ```json
 {
+  "res": 0,
   "err_code": 14,
+  "err_msg": "",
   "data": {
     "invoices": [[37, 43]]
   }
