@@ -22,6 +22,23 @@ E-taxes-dan qaimələrin yüklənməsi iki API çağırışı tələb edir:
 
 ---
 
+## Autentifikasiya və Müştəri Konteksti
+
+### Korporativ Müştərilər üçün
+- **`phone` parametri lazım deyil** - öz şirkətinizin məlumatları üzərində əməliyyat aparır
+- `username`/`password` və ya token autentifikasiyasından istifadə edin
+- Subdomen formatı: `company.vatportal.az`
+
+### Partnerlər üçün
+- **`phone` parametri bütün API çağırışlarında TƏLƏb OLUNUR**
+- Hansı müştəri adından əməliyyat apardığınızı müəyyən edir
+- Format: `994XXXXXXXXX` (ASAN telefon nömrəsi)
+- Subdomen formatı: `partnername.vatportal.az`
+
+Daha ətraflı məlumat üçün [Partner İnteqrasiya Bələdçisi](./partner-integration.md) baxın.
+
+---
+
 ## Addım 1: Yükləmə Prosesini Başlatın
 
 ### Endpoint
@@ -36,7 +53,7 @@ POST https://<company>.vatportal.az/api/etx/import
 |----------|--------|--------------|----------|
 | `username` | Portal istifadəçi adı | Bəli | - |
 | `password` | Portal parolu | Bəli | - |
-| `phone` | E-taxes autentifikasiyası üçün ASAN telefon nömrəsi (format: 994XXXXXXXXX) | Bəli | - |
+| `phone` | ASAN telefon nömrəsi (format: 994XXXXXXXXX) **[Yalnız partnerlər üçün]** | Partnerlər: Bəli<br>Korporativ: Xeyr | - |
 | `date_from` | E-taxes-da qaimənin yaradılma başlanğıc tarixi (dd.mm.yyyy və ya dd.mm.yyyy hh:mm) | Bəli | - |
 | `date_to` | E-taxes-da qaimənin yaradılma bitmə tarixi (dd.mm.yyyy və ya dd.mm.yyyy hh:mm) | Bəli | - |
 | `dir` | Qovluq növü: `0` = Daxil olan, `1` = Göndərilmiş | Bəli | `0` |
@@ -49,10 +66,24 @@ POST https://<company>.vatportal.az/api/etx/import
 
 ### Sorğu Nümunəsi
 
+**Korporativ Müştəri:**
 ```json
 {
   "username": "istifadəçi_adım",
   "password": "parolum",
+  "date_from": "01.08.2025",
+  "date_to": "07.08.2025",
+  "dir": 1,
+  "inc_status": "approved,onApproval",
+  "exc_kinds": "returnInvoice"
+}
+```
+
+**Partner:**
+```json
+{
+  "username": "partner_adı",
+  "password": "partner_parolu",
   "phone": "994501234567",
   "date_from": "01.08.2025",
   "date_to": "07.08.2025",
@@ -96,7 +127,7 @@ GET https://<company>.vatportal.az/api/etx/read_invoices
 |----------|--------|--------------|
 | `username` | Portal istifadəçi adı | Bəli |
 | `password` | Portal parolu | Bəli |
-| `phone` | ASAN telefon nömrəsi (format: 994XXXXXXXXX) | Bəli |
+| `phone` | ASAN telefon nömrəsi (format: 994XXXXXXXXX) **[Yalnız partnerlər üçün]** | Partnerlər: Bəli<br>Korporativ: Xeyr |
 | `procId` | Yükləmə sorğusundan proses ID | Bəli |
 | `dir` | Qovluq növü: `0` = Daxil olan, `1` = Göndərilmiş | Xeyr (standart: 0) |
 
@@ -106,7 +137,7 @@ GET https://<company>.vatportal.az/api/etx/read_invoices
 |----------|--------|--------------|
 | `username` | Portal istifadəçi adı | Bəli |
 | `password` | Portal parolu | Bəli |
-| `phone` | ASAN telefon nömrəsi (format: 994XXXXXXXXX) | Bəli |
+| `phone` | ASAN telefon nömrəsi (format: 994XXXXXXXXX) **[Yalnız partnerlər üçün]** | Partnerlər: Bəli<br>Korporativ: Xeyr |
 | `date_from` | Başlanğıc tarixi (dd.mm.yyyy) | Bəli |
 | `date_to` | Bitmə tarixi (dd.mm.yyyy) | Bəli |
 | `dir` | Qovluq növü: `0` = Daxil olan, `1` = Göndərilmiş | Xeyr (standart: 0) |
@@ -116,10 +147,21 @@ GET https://<company>.vatportal.az/api/etx/read_invoices
 
 ### Sorğu Nümunəsi (Proses ID üzrə)
 
+**Korporativ Müştəri:**
 ```json
 {
   "username": "istifadəçi_adım",
   "password": "parolum",
+  "procId": 123,
+  "dir": 1
+}
+```
+
+**Partner:**
+```json
+{
+  "username": "partner_adı",
+  "password": "partner_parolu",
   "phone": "994501234567",
   "procId": 123,
   "dir": 1
@@ -128,10 +170,23 @@ GET https://<company>.vatportal.az/api/etx/read_invoices
 
 ### Sorğu Nümunəsi (Tarix Aralığı üzrə)
 
+**Korporativ Müştəri:**
 ```json
 {
   "username": "istifadəçi_adım",
   "password": "parolum",
+  "date_from": "01.08.2025",
+  "date_to": "07.08.2025",
+  "dir": 1,
+  "from": 1
+}
+```
+
+**Partner:**
+```json
+{
+  "username": "partner_adı",
+  "password": "partner_parolu",
   "phone": "994501234567",
   "date_from": "01.08.2025",
   "date_to": "07.08.2025",
@@ -263,12 +318,27 @@ GET https://<company>.vatportal.az/api/etx/read_invoices
 
 Yalnız təsdiqlənmiş qaimələri yükləyin, təsdiq və ya yeniləmə gözləyənləri çıxararaq:
 
+**Korporativ Müştəri:**
 ```bash
 curl -X POST https://company.vatportal.az/api/etx/import \
   -H "Content-Type: application/json" \
   -d '{
     "username": "istifadəçim",
     "password": "parolum",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 0,
+    "inc_status": "approved"
+  }'
+```
+
+**Partner:**
+```bash
+curl -X POST https://partnername.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "partner_adı",
+    "password": "partner_parolu",
     "phone": "994501234567",
     "date_from": "01.01.2025",
     "date_to": "31.01.2025",
@@ -281,12 +351,27 @@ curl -X POST https://company.vatportal.az/api/etx/import \
 
 Ləğv edilmiş və ya silinmiş qaimələr istisna olmaqla bütün qaimələri yükləyin:
 
+**Korporativ Müştəri:**
 ```bash
 curl -X POST https://company.vatportal.az/api/etx/import \
   -H "Content-Type: application/json" \
   -d '{
     "username": "istifadəçim",
     "password": "parolum",
+    "date_from": "01.01.2025",
+    "date_to": "31.01.2025",
+    "dir": 1,
+    "exc_status": "canceled,deleted,deletedBySystem"
+  }'
+```
+
+**Partner (`phone` parametri əlavə edin):**
+```bash
+curl -X POST https://partnername.vatportal.az/api/etx/import \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "partner_adı",
+    "password": "partner_parolu",
     "phone": "994501234567",
     "date_from": "01.01.2025",
     "date_to": "31.01.2025",
@@ -294,6 +379,9 @@ curl -X POST https://company.vatportal.az/api/etx/import \
     "exc_status": "canceled,deleted,deletedBySystem"
   }'
 ```
+
+> **Nümunələr 3-7 üçün qeyd:** Qısalıq üçün aşağıdakı nümunələr yalnız korporativ müştəri formatında göstərilib.
+> **Partnerlər:** `"phone": "994XXXXXXXXX"` parametrini əlavə edin və `partnername.vatportal.az` subdomenindən istifadə edin.
 
 ### Nümunə 3: Yalnız Standart Qaimələri Yükləyin
 
@@ -305,7 +393,6 @@ curl -X POST https://company.vatportal.az/api/etx/import \
   -d '{
     "username": "istifadəçim",
     "password": "parolum",
-    "phone": "994501234567",
     "date_from": "01.01.2025",
     "date_to": "31.01.2025",
     "dir": 0,
@@ -323,7 +410,6 @@ curl -X POST https://company.vatportal.az/api/etx/import \
   -d '{
     "username": "istifadəçim",
     "password": "parolum",
-    "phone": "994501234567",
     "date_from": "01.01.2025",
     "date_to": "31.01.2025",
     "dir": 0,
@@ -341,7 +427,6 @@ curl -X POST https://company.vatportal.az/api/etx/import \
   -d '{
     "username": "istifadəçim",
     "password": "parolum",
-    "phone": "994501234567",
     "date_from": "01.01.2025",
     "date_to": "31.01.2025",
     "dir": 1,
@@ -360,7 +445,6 @@ curl -X POST https://company.vatportal.az/api/etx/import \
   -d '{
     "username": "istifadəçim",
     "password": "parolum",
-    "phone": "994501234567",
     "date_from": "01.12.2024",
     "date_to": "31.12.2024",
     "dir": 0,
@@ -378,7 +462,6 @@ curl -X POST https://company.vatportal.az/api/etx/import \
   -d '{
     "username": "istifadəçim",
     "password": "parolum",
-    "phone": "994501234567",
     "date_from": "01.01.2025",
     "date_to": "31.03.2025",
     "dir": 1,
@@ -416,6 +499,7 @@ curl -X POST https://company.vatportal.az/api/etx/import \
 
 ## Tam İş Axını Nümunəsi
 
+**Korporativ Müştəri:**
 ```bash
 # Addım 1: Yükləmə prosesini başlatın
 curl -X POST https://mycompany.vatportal.az/api/etx/import \
@@ -423,7 +507,6 @@ curl -X POST https://mycompany.vatportal.az/api/etx/import \
   -d '{
     "username": "istifadəçim",
     "password": "parolum",
-    "phone": "994501234567",
     "date_from": "01.08.2025",
     "date_to": "07.08.2025",
     "dir": 1,
@@ -449,17 +532,28 @@ curl -X GET https://mycompany.vatportal.az/api/etx/read_invoices \
   -d '{
     "username": "istifadəçim",
     "password": "parolum",
-    "phone": "994501234567",
     "procId": 123,
     "dir": 1
   }'
+```
+
+**Partner (Addım 1 və 3-ə `phone` parametri əlavə edin):**
+```bash
+# Addım 1: phone parametri daxil edin
+curl -X POST https://partnername.vatportal.az/api/etx/import \
+  -d '{"username": "...", "password": "...", "phone": "994501234567", ...}'
+
+# Addım 3: phone parametri daxil edin
+curl -X GET https://partnername.vatportal.az/api/etx/read_invoices \
+  -d '{"username": "...", "password": "...", "phone": "994501234567", "procId": 123, ...}'
 ```
 
 ---
 
 ## Vacib Qeydlər
 
-- **Telefon Nömrəsi Tələb olunur:** Bu funksiyadan istifadə etməzdən əvvəl portalda ASAN telefon nömrəsini konfiqurasiya etməlisiniz
+- **Telefon Parametri (Yalnız Partnerlər üçün):** Partnerlər hansı müştəri adından əməliyyat apardıqlarını müəyyən etmək üçün `phone` parametrini daxil etməlidirlər. Korporativ müştərilər bu parametrə ehtiyac duymur.
+- **ASAN Konfiqurasiyası:** ASAN telefon nömrələri istifadədən əvvəl portalda konfiqurasiya edilməlidir
 - **Autentifikasiya:** Yükləmə prosesi SMS/ASAN giriş vasitəsilə PIN1 təsdiqi tələb edəcək
 - **Səhifələmə:** Böyük nəticə dəstləri 5000 qeyd səhifələrində qaytarılır
 - **Tarix Formatı:** `dd.mm.yyyy` və ya `dd.mm.yyyy hh:mm` formatından istifadə edin
