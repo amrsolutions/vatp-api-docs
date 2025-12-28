@@ -13,6 +13,7 @@ VatPortal API enables third-party ERP systems to programmatically interact with 
 ### 🚀 Getting Started
 - [**Quick Start**](./quickstart.md) - Get up and running in 5 minutes
 - [**Authentication**](./authentication.md) - Setup credentials and tokens (username/password and token-based)
+- [**Partner Integration**](./partner-integration.md) - Multi-customer integration for partners
 
 ### 📡 API Endpoints
 

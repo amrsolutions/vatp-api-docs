@@ -13,6 +13,7 @@ VatPortal API üçüncü tərəf ERP sistemlərinə Azərbaycanın e-taxes.gov.a
 ### 🚀 Başlanğıc
 - [**Sürətli Başlanğıc**](./quickstart.md) - 5 dəqiqədə işə başlayın
 - [**Autentifikasiya**](./authentication.md) - İcazə məlumatlarını və tokenləri quraşdırın (istifadəçi adı/parol və token əsaslı)
+- [**Partner İnteqrasiyası**](./partner-integration.md) - Partnerlər üçün çox-müştərili inteqrasiya
 
 ### 📡 API Endpointləri
 
