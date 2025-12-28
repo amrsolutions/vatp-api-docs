@@ -93,6 +93,7 @@ ERP sisteminizi birbaşa e-taxes.gov.az ilə birləşdirin. Qaimə-fakturaları 
 #### Məlumat Sənədləri
 - [**Qaimə Növləri**](./invoice-types.md) - Bütün dəstəklənən qaimə növləri və istifadəsi
 - [**Xəta Kodları**](./error-codes.md) - Tam xəta məlumatı və problemlərin həlli
+- [**Polling Ən Yaxşı Təcrübələri**](./polling-guide.md) - Proses statusu üçün effektiv polling
 - [**Nümunələr**](./examples.md) - Real sorğu və cavab nümunələri
 
 ### 📚 Əlavə Resurslar
@@ -109,6 +110,8 @@ ERP sisteminizi birbaşa e-taxes.gov.az ilə birləşdirin. Qaimə-fakturaları 
 ### Proses Monitorinqi
 - [`GET /job/read_proc_status`](./import-upload-invoices.md#monitor-process) - Proses statusunu yoxlamaq
 - [`GET /job/read_proc_data`](./import-upload-invoices.md#monitor-process) - Ətraflı proses məlumatlarını əldə etmək
+
+💡 **Ən yaxşı təcrübələri öyrənin:** [Polling Bələdçisi](./polling-guide.md) - Tövsiyə olunan polling intervalları, eksponensial geri çəkilmə və xəta idarəetməsi
 
 ### E-taxes İnteqrasiyası
 - [`POST /etx/import`](./download-from-etaxes.md#addım-1-yükləmə-prosesini-başladın) - Onlayn sistemdən qaimələri endirmək (v7.0)

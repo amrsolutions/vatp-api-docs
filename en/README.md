@@ -93,6 +93,7 @@ Perfect if you **manage multiple companies** and need to operate on their behalf
 #### Reference Documentation
 - [**Invoice Types**](./invoice-types.md) - All supported invoice types and their usage
 - [**Error Codes**](./error-codes.md) - Complete error reference and troubleshooting
+- [**Polling Best Practices**](./polling-guide.md) - How to efficiently poll for process status
 - [**Examples**](./examples.md) - Real-world request and response examples
 
 ### 📚 Additional Resources
@@ -109,6 +110,8 @@ Perfect if you **manage multiple companies** and need to operate on their behalf
 ### Process Monitoring
 - [`GET /job/read_proc_status`](./import-upload-invoices.md#monitor-process) - Check process status
 - [`GET /job/read_proc_data`](./import-upload-invoices.md#monitor-process) - Get detailed process data
+
+💡 **Learn best practices:** [Polling Guide](./polling-guide.md) - Recommended polling intervals, exponential backoff, and error handling
 
 ### E-taxes Integration
 - [`POST /etx/import`](./download-from-etaxes.md#step-1-start-download-process) - Download qaimes from online system (v7.0)

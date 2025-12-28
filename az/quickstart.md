@@ -241,6 +241,7 @@ curl -X POST https://yourcompany.vatportal.az/api/inv/import_upload_invoices.php
 ### Daha Çox Öyrənin
 - 📖 [Autentifikasiya Bələdçisi](./authentication.md) - Token idarəetməsi və təhlükəsizlik
 - 🔍 [Qaimələri İdxal və Yükləmək](./import-upload-invoices.md) - Tam endpoint arayışı
+- ⏱️ [Polling Ən Yaxşı Təcrübələri](./polling-guide.md) - Effektiv proses statusu monitorinqi
 - 💡 [Nümunələr](./examples.md) - Real istifadə halları
 - ⚠️ [Xəta Kodları](./error-codes.md) - Problemlərin həlli bələdçisi
 
