@@ -37,11 +37,15 @@ Status yeniləmələri üçün poll etmək üçün bu `id`-dən istifadə edin.
 
 ## Tövsiyə Olunan Polling Strategiyası
 
-### Əsas Polling Nümunəsi
+### Proqressiv İntervallar (Tövsiyə Olunur)
+
+**Əksər VatPortal əməliyyatları 3-5 dəqiqə çəkir.** Proqressiv intervallardan istifadə (sürətli başlayıb, sonra yavaşlamaq) cavabdehlik və server effektivliyi arasında ən yaxşı tarazlığı təmin edir:
 
 ```javascript
-async function pollProcessStatus(procId, maxAttempts = 60) {
-  const pollInterval = 2000; // 2 saniyə
+async function pollProcessStatus(procId, maxAttempts = 120) {
+  let interval = 2000; // Cavabdehlik üçün 2 saniyə ilə başlayın
+  const maxInterval = 10000; // 10 saniyədə məhdudlaşdırın
+  const startTime = Date.now();
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const response = await fetch('https://company.vatportal.az/api/job/read_proc_status', {
@@ -66,9 +70,20 @@ async function pollProcessStatus(procId, maxAttempts = 60) {
       return { success: false, data: data.data };
     }
 
-    // Proses hələ də işləyir, növbəti poll-dan əvvəl gözləyin
-    console.log(`⏳ Cəhd ${attempt}/${maxAttempts} - Proses hələ də işləyir...`);
-    await new Promise(resolve => setTimeout(resolve, pollInterval));
+    // Keçmiş vaxta əsasən intervalı tənzimləyin
+    const elapsedTime = Date.now() - startTime;
+
+    if (elapsedTime > 120000) {
+      // 2 dəqiqədən sonra, 10 saniyəyə yavaşladın
+      interval = 10000;
+    } else if (elapsedTime > 60000) {
+      // 1 dəqiqədən sonra, 5 saniyəyə yavaşladın
+      interval = 5000;
+    }
+    // İlk dəqiqə: 2 saniyədə saxlayın
+
+    console.log(`⏳ Cəhd ${attempt}/${maxAttempts} - Növbəti poll ${interval/1000}s-də...`);
+    await new Promise(resolve => setTimeout(resolve, interval));
   }
 
   // Vaxt bitdi
@@ -76,12 +91,18 @@ async function pollProcessStatus(procId, maxAttempts = 60) {
 }
 ```
 
-### Eksponensial Geri Çəkilmə Nümunəsi
+**Niyə proqressiv intervallar?**
+- **İlkin sürətli cavab**: 2 saniyəlik intervallar sürətli əməliyyatları tutur
+- **Azaldılmış server yükü**: Uzun müddətli proseslər üçün yavaş intervallar (orta 3-5 dəq)
+- **2 dəqiqədən artıq əməliyyatlar üçün 60-70% az sorğu**
+- **Daha yaxşı istifadəçi təcrübəsi**: Mümkün olduqda sürətli rəy, lazım olduqda səmərəli
 
-Daha yaxşı effektivlik və azaldılmış server yükü üçün eksponensial geri çəkilmədən istifadə edin:
+### Alternativ: Eksponensial Geri Çəkilmə
+
+Riyazi olaraq artan intervallar istədiyiniz ssenarilər üçün:
 
 ```javascript
-async function pollWithBackoff(procId, maxAttempts = 30) {
+async function pollWithExponentialBackoff(procId, maxAttempts = 60) {
   let interval = 1000; // 1 saniyə ilə başlayın
   const maxInterval = 10000; // 10 saniyədə məhdudlaşdırın
 
@@ -110,7 +131,7 @@ async function pollWithBackoff(procId, maxAttempts = 30) {
     console.log(`⏳ Cəhd ${attempt} - Yenidən cəhddən əvvəl ${interval}ms gözləyir...`);
     await new Promise(resolve => setTimeout(resolve, interval));
 
-    // İntervalı artırın (eksponensial geri çəkilmə)
+    // İntervalı artırın (eksponensial geri çəkilmə: 1s → 1.5s → 2.25s → 3.37s → 5s → 7.5s → 10s)
     interval = Math.min(interval * 1.5, maxInterval);
   }
 
@@ -118,25 +139,62 @@ async function pollWithBackoff(procId, maxAttempts = 30) {
 }
 ```
 
+### Sadə Sabit İnterval (İstehsal Üçün Tövsiyə Olunmur)
+
+Yalnız sürətli əməliyyatlar və ya test üçün sabit intervallardan istifadə edin:
+
+```javascript
+async function pollWithFixedInterval(procId, maxAttempts = 60) {
+  const pollInterval = 2000; // 2 saniyə (sabit)
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const response = await fetch('https://company.vatportal.az/api/job/read_proc_status', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-vatpapikey': 'SİZİN_TOKENİNİZ'
+      },
+      body: JSON.stringify({ procId })
+    });
+
+    const data = await response.json();
+
+    if (data.data.status === 2) {
+      return { success: true, data: data.data };
+    }
+
+    if (data.data.status === 3) {
+      return { success: false, data: data.data };
+    }
+
+    await new Promise(resolve => setTimeout(resolve, pollInterval));
+  }
+
+  throw new Error('Polling vaxt bitməsi');
+}
+```
+
+**Xəbərdarlıq:** Sabit intervallar VatPortal-ın 3-5 dəqiqəlik əməliyyatları üçün səmərəsizdir və lazımsız server yükü yaradır.
+
 ---
 
 ## Əməliyyat Növünə Görə Polling İntervalları
 
-Müxtəlif əməliyyatların müxtəlif tipik tamamlanma müddətləri var. Polling strategiyanızı buna uyğun tənzimləyin:
+Müxtəlif əməliyyatların müxtəlif tipik tamamlanma müddətləri var. **Əksər əməliyyatlar orta hesabla 3-5 dəqiqə çəkir**, ona görə də proqressiv intervallar tövsiyə olunur:
 
-| Əməliyyat | Tipik Müddət | Tövsiyə Olunan İlkin İnterval | Tövsiyə Olunan Maks İnterval |
-|-----------|--------------|-------------------------------|------------------------------|
-| **Yalnız İdxal** (upload: false) | 5-15 saniyə | 1 saniyə | 3 saniyə |
-| **İdxal və Yükləmə** (upload: true) | 30-90 saniyə | 2 saniyə | 5 saniyə |
-| **İdxal və Yükləmə (böyük dəstə)** | 1-5 dəqiqə | 3 saniyə | 10 saniyə |
-| **E-taxes-dan Endirmə** | 20-60 saniyə | 2 saniyə | 5 saniyə |
-| **E-taxes Qaimələrini Silmək** | 10-30 saniyə | 1 saniyə | 3 saniyə |
+| Əməliyyat | Tipik Müddət | İlkin İnterval | Proqressiv Cədvəl |
+|-----------|--------------|----------------|-------------------|
+| **İdxal və Yükləmə** (upload: true) | **3-5 dəqiqə** | 2 saniyə | 2s (0-1dəq) → 5s (1-2dəq) → 10s (2dəq+) |
+| **E-taxes-dan Endirmə** | 3-5 dəqiqə | 2 saniyə | 2s (0-1dəq) → 5s (1-2dəq) → 10s (2dəq+) |
+| **E-taxes Qaimələrini Silmək** | 3-5 dəqiqə | 2 saniyə | 2s (0-1dəq) → 5s (1-2dəq) → 10s (2dəq+) |
+| **Yalnız İdxal** (upload: false) | 30-60 saniyə | 2 saniyə | 2s (sabit) - tez tamamlanır |
 
 **Qeyd:** Faktiki müddət aşağıdakılardan asılıdır:
 - Emal olunan qaimələrin sayı
 - E-taxes sistem cavab vaxtı
 - Şəbəkə gecikmə
 - PIN kodlarının daxil edilməsinin tələb olunub-olunmaması
+- Pik saatlarda server yükü
 
 ---
 
@@ -330,8 +388,10 @@ function sleep(ms) {
 
 ### ✅ EDİN
 
-- Server yükünü azaltmaq üçün **eksponensial geri çəkilmədən istifadə edin**
-- **Ağlabatan vaxt məhdudiyyətləri təyin edin** (əksər əməliyyatlar üçün 2-5 dəqiqə)
+- 3-5 dəqiqəlik əməliyyatlar üçün server yükünü azaltmaq üçün **proqressiv və ya eksponensial geri çəkilmədən istifadə edin** - vacibdir
+- İlkin cavabdehlik üçün **2 saniyəlik intervallarla başlayın**
+- **1-2 dəqiqədən sonra yavaşlayın** - Əksər əməliyyatlar hələ də işləyir, poll tezliyini azaldın
+- **Ağlabatan vaxt məhdudiyyətləri təyin edin** - Əksər əməliyyatlar üçün 5-10 dəqiqə (proqressiv intervallarla 120 maks cəhd)
 - Poll etməyi dayandırmaq üçün **terminal vəziyyətləri izləyin** (status 2 və ya 3)
 - **Xətaları qeyri-adi şəkildə idarə edin** - e-taxes xətaları üçün `etx_exception` sahəsini yoxlayın
 - PIN kodları tələb olunduqda **istifadəçilərə bildiriş göndərin**
@@ -340,12 +400,14 @@ function sleep(ms) {
 
 ### ❌ ETMƏYİN
 
-- **Çox tez-tez poll etməyin** - Minimum 1 saniyə intervallar
+- **Uzun əməliyyatlar üçün sabit intervallardan istifadə etməyin** - 3-5 dəqiqəlik proseslər üçün lazımsız yük yaradır
+- **1 saniyədən sürətli poll etməyin** - Minimum interval 1 saniyə olmalıdır
 - **Qeyri-müəyyən müddətə poll etməyin** - Həmişə maksimum cəhd limiti təyin edin
 - **Status kodlarını nəzərə almayın** - Həm `status`, həm də `err_code` yoxlayın
 - **Xəta idarəetməsini atlayın** - Proses status 3 (xətalar) ilə tamamlana bilər
 - **Tamamlandıqdan sonra poll etməyin** - Status 2 və ya 3 olduqda dayandırın
 - **POST metodundan istifadə etməyin** - `read_proc_status` GET endpointidir
+- **Bütün prosesləri eyni vaxtda poll etməyin** - Ardıcıl emal server yükünü azaldır
 
 ---
 

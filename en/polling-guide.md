@@ -37,11 +37,15 @@ Use this `id` to poll for status updates.
 
 ## Recommended Polling Strategy
 
-### Basic Polling Pattern
+### Progressive Intervals (Recommended)
+
+**Most VatPortal operations take 3-5 minutes to complete.** Using progressive intervals (starting fast, then slowing down) provides the best balance between responsiveness and server efficiency:
 
 ```javascript
-async function pollProcessStatus(procId, maxAttempts = 60) {
-  const pollInterval = 2000; // 2 seconds
+async function pollProcessStatus(procId, maxAttempts = 120) {
+  let interval = 2000; // Start at 2 seconds for responsiveness
+  const maxInterval = 10000; // Cap at 10 seconds
+  const startTime = Date.now();
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const response = await fetch('https://company.vatportal.az/api/job/read_proc_status', {
@@ -66,9 +70,20 @@ async function pollProcessStatus(procId, maxAttempts = 60) {
       return { success: false, data: data.data };
     }
 
-    // Process still running, wait before next poll
-    console.log(`⏳ Attempt ${attempt}/${maxAttempts} - Process still running...`);
-    await new Promise(resolve => setTimeout(resolve, pollInterval));
+    // Adjust interval based on elapsed time
+    const elapsedTime = Date.now() - startTime;
+
+    if (elapsedTime > 120000) {
+      // After 2 minutes, slow to 10 seconds
+      interval = 10000;
+    } else if (elapsedTime > 60000) {
+      // After 1 minute, slow to 5 seconds
+      interval = 5000;
+    }
+    // First minute: keep at 2 seconds
+
+    console.log(`⏳ Attempt ${attempt}/${maxAttempts} - Next poll in ${interval/1000}s...`);
+    await new Promise(resolve => setTimeout(resolve, interval));
   }
 
   // Timeout reached
@@ -76,12 +91,18 @@ async function pollProcessStatus(procId, maxAttempts = 60) {
 }
 ```
 
-### Exponential Backoff Pattern
+**Why progressive intervals?**
+- **Fast response initially**: 2-second intervals catch quick operations
+- **Reduced server load**: Slower intervals for long-running processes (3-5 min avg)
+- **60-70% fewer requests** for operations over 2 minutes
+- **Better user experience**: Quick feedback when possible, efficient when needed
 
-For better efficiency and reduced server load, use exponential backoff:
+### Alternative: Exponential Backoff
+
+For scenarios where you want mathematically increasing intervals:
 
 ```javascript
-async function pollWithBackoff(procId, maxAttempts = 30) {
+async function pollWithExponentialBackoff(procId, maxAttempts = 60) {
   let interval = 1000; // Start with 1 second
   const maxInterval = 10000; // Cap at 10 seconds
 
@@ -110,7 +131,7 @@ async function pollWithBackoff(procId, maxAttempts = 30) {
     console.log(`⏳ Attempt ${attempt} - Waiting ${interval}ms before retry...`);
     await new Promise(resolve => setTimeout(resolve, interval));
 
-    // Increase interval (exponential backoff)
+    // Increase interval (exponential backoff: 1s → 1.5s → 2.25s → 3.37s → 5s → 7.5s → 10s)
     interval = Math.min(interval * 1.5, maxInterval);
   }
 
@@ -118,25 +139,62 @@ async function pollWithBackoff(procId, maxAttempts = 30) {
 }
 ```
 
+### Simple Fixed Interval (Not Recommended for Production)
+
+Only use fixed intervals for quick operations or testing:
+
+```javascript
+async function pollWithFixedInterval(procId, maxAttempts = 60) {
+  const pollInterval = 2000; // 2 seconds (fixed)
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const response = await fetch('https://company.vatportal.az/api/job/read_proc_status', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-vatpapikey': 'YOUR_TOKEN'
+      },
+      body: JSON.stringify({ procId })
+    });
+
+    const data = await response.json();
+
+    if (data.data.status === 2) {
+      return { success: true, data: data.data };
+    }
+
+    if (data.data.status === 3) {
+      return { success: false, data: data.data };
+    }
+
+    await new Promise(resolve => setTimeout(resolve, pollInterval));
+  }
+
+  throw new Error('Polling timeout');
+}
+```
+
+**Warning:** Fixed intervals are inefficient for VatPortal's 3-5 minute operations and create unnecessary server load.
+
 ---
 
 ## Polling Intervals by Operation Type
 
-Different operations have different typical completion times. Adjust your polling strategy accordingly:
+Different operations have different typical completion times. **Most operations average 3-5 minutes**, so progressive intervals are recommended:
 
-| Operation | Typical Duration | Recommended Initial Interval | Recommended Max Interval |
-|-----------|------------------|------------------------------|--------------------------|
-| **Import Only** (upload: false) | 5-15 seconds | 1 second | 3 seconds |
-| **Import & Upload** (upload: true) | 30-90 seconds | 2 seconds | 5 seconds |
-| **Import & Upload (large batch)** | 1-5 minutes | 3 seconds | 10 seconds |
-| **Download from E-taxes** | 20-60 seconds | 2 seconds | 5 seconds |
-| **Delete E-taxes Invoices** | 10-30 seconds | 1 second | 3 seconds |
+| Operation | Typical Duration | Initial Interval | Progressive Schedule |
+|-----------|------------------|------------------|----------------------|
+| **Import & Upload** (upload: true) | **3-5 minutes** | 2 seconds | 2s (0-1min) → 5s (1-2min) → 10s (2min+) |
+| **Download from E-taxes** | 3-5 minutes | 2 seconds | 2s (0-1min) → 5s (1-2min) → 10s (2min+) |
+| **Delete E-taxes Invoices** | 3-5 minutes | 2 seconds | 2s (0-1min) → 5s (1-2min) → 10s (2min+) |
+| **Import Only** (upload: false) | 30-60 seconds | 2 seconds | 2s (fixed) - completes quickly |
 
 **Note:** Actual duration depends on:
 - Number of invoices being processed
 - E-taxes system response time
 - Network latency
 - Whether PIN codes need to be entered
+- Server load during peak hours
 
 ---
 
@@ -330,8 +388,10 @@ function sleep(ms) {
 
 ### ✅ DO
 
-- **Use exponential backoff** to reduce server load
-- **Set reasonable timeouts** (2-5 minutes for most operations)
+- **Use progressive or exponential backoff** - Essential for 3-5 minute operations to reduce server load
+- **Start with 2-second intervals** - Provides good responsiveness initially
+- **Slow down after 1-2 minutes** - Most operations are still running, reduce polling frequency
+- **Set reasonable timeouts** - 5-10 minutes for most operations (120 max attempts with progressive intervals)
 - **Monitor terminal states** (status 2 or 3) to stop polling
 - **Handle errors gracefully** - check `etx_exception` field for e-taxes errors
 - **Notify users** when PIN codes are required
@@ -340,12 +400,14 @@ function sleep(ms) {
 
 ### ❌ DON'T
 
-- **Don't poll too frequently** - Minimum 1 second intervals
+- **Don't use fixed intervals for long operations** - Creates unnecessary load for 3-5 minute processes
+- **Don't poll faster than 1 second** - Minimum interval should be 1 second
 - **Don't poll indefinitely** - Always set a maximum attempt limit
 - **Don't ignore status codes** - Check both `status` and `err_code`
 - **Don't skip error handling** - Process may complete with status 3 (errors)
 - **Don't poll after completion** - Stop when status is 2 or 3
 - **Don't use POST method** - `read_proc_status` is a GET endpoint
+- **Don't poll all processes simultaneously** - Sequential processing reduces server load
 
 ---
 
