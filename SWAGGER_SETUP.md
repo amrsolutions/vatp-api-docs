@@ -74,6 +74,12 @@ The OpenAPI spec includes:
 
 ## Customization
 
+### Update Documentation Links
+
+⚠️ **Important:** The current OpenAPI spec uses generic text references to documentation guides. Once you've deployed to GitHub Pages and know your URL, you should add clickable links.
+
+**See [UPDATE_LINKS.md](./UPDATE_LINKS.md) for detailed instructions** on updating all documentation links to point to your GitHub Pages site with clickable links in Swagger UI.
+
 ### Update OpenAPI Specification
 
 Edit `openapi.yaml` to:
@@ -81,6 +87,7 @@ Edit `openapi.yaml` to:
 - Update examples
 - Modify descriptions
 - Change schema definitions
+- Update contact information and support URLs
 
 After editing, changes will be reflected immediately in Swagger UI.
 

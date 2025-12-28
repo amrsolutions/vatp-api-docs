@@ -27,7 +27,7 @@ info:
     - **Enterprise**: Single company integration (no `phone` parameter needed)
     - **Partner**: Multi-customer integration (`phone` parameter required in all requests)
 
-    See [Partner Integration Guide](https://github.com/yourusername/vatportal-docs/blob/main/en/partner-integration.md) for details.
+    See the Partner Integration Guide in the documentation for details.
 
   version: 1.0.0
   contact:
@@ -79,7 +79,7 @@ paths:
 
         **Recommended Polling:** Use progressive intervals (2s → 5s → 10s) for 3-5 minute operations.
 
-        See [Polling Best Practices](https://github.com/yourusername/vatportal-docs/blob/main/en/polling-guide.md)
+        See the Polling Best Practices guide in the documentation for implementation details.
       operationId: importUploadInvoices
       requestBody:
         required: true
@@ -329,7 +329,7 @@ paths:
         **Average process time:** 3-5 minutes
         **Recommended polling:** Progressive intervals (2s → 5s → 10s)
 
-        See [Download from E-taxes Guide](https://github.com/yourusername/vatportal-docs/blob/main/en/download-from-etaxes.md)
+        See the Download from E-taxes guide in the documentation for complete details.
       operationId: downloadFromEtaxes
       requestBody:
         required: true
@@ -537,7 +537,7 @@ paths:
         - Cancelled invoices
         - Final/completed status invoices
 
-        See [Delete E-taxes Invoices Guide](https://github.com/yourusername/vatportal-docs/blob/main/en/delete-etaxes-invoices.md)
+        See the Delete E-taxes Invoices guide in the documentation for complete usage details.
       operationId: deleteEtaxesInvoices
       requestBody:
         required: true
@@ -629,7 +629,7 @@ paths:
         - 60-120 seconds: Poll every 5 seconds
         - After 120 seconds: Poll every 10 seconds
 
-        See [Polling Best Practices](https://github.com/yourusername/vatportal-docs/blob/main/en/polling-guide.md)
+        See the Polling Best Practices guide in the documentation for detailed implementation examples.
       operationId: readProcessStatus
       parameters:
         - name: Content-Type
