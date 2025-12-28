@@ -92,7 +92,7 @@
             // Get subdomain from localStorage or use default
             const savedSubdomain = localStorage.getItem('vatportal_subdomain') || 'demo';
 
-            // Initialize Swagger UI
+            // Initialize Swagger UI with servers from saved subdomain
             const ui = SwaggerUIBundle({
                 url: './openapi.yaml',
                 dom_id: '#swagger-ui',
@@ -105,26 +105,29 @@
                     SwaggerUIBundle.plugins.DownloadUrl
                 ],
                 layout: "StandaloneLayout",
-                // Set the server based on saved subdomain
                 onComplete: function() {
-                    updateServerUrl(savedSubdomain);
                     injectSubdomainConfig();
+                    // Set initial server
+                    setServerFromSubdomain(savedSubdomain);
                 }
             });
 
             window.ui = ui;
 
-            // Function to update server URL
-            function updateServerUrl(subdomain) {
-                const servers = [{
-                    url: `https://${subdomain}.vatportal.az/api`,
-                    description: `API Server (${subdomain})`
-                }];
-
-                ui.specActions.updateSpec(JSON.stringify({
-                    ...ui.getState().toJSON().spec.json,
-                    servers: servers
-                }));
+            // Function to set server based on subdomain
+            function setServerFromSubdomain(subdomain) {
+                // Wait for UI to be ready
+                setTimeout(() => {
+                    const serverInput = document.querySelector('.servers select');
+                    if (serverInput) {
+                        // The server dropdown should have the variable server from openapi.yaml
+                        // Just set the subdomain variable value
+                        const subdomainInput = document.querySelector('input[placeholder*="subdomain"]');
+                        if (subdomainInput) {
+                            subdomainInput.value = subdomain;
+                        }
+                    }
+                }, 500);
             }
 
             // Inject custom subdomain configuration UI
@@ -180,13 +183,18 @@
                 // Save to localStorage
                 localStorage.setItem('vatportal_subdomain', subdomain);
 
-                // Update the server URL
-                updateServerUrl(subdomain);
-
                 // Update display
                 const serverDisplay = document.getElementById('current-server-display');
                 if (serverDisplay) {
                     serverDisplay.innerHTML = `Current Server: <strong>https://${subdomain}.vatportal.az/api</strong>`;
+                }
+
+                // Find and update the Swagger UI server variable input
+                const swaggerSubdomainInput = document.querySelector('input[placeholder*="subdomain"]');
+                if (swaggerSubdomainInput) {
+                    swaggerSubdomainInput.value = subdomain;
+                    // Trigger change event
+                    swaggerSubdomainInput.dispatchEvent(new Event('change', { bubbles: true }));
                 }
 
                 // Show success message
