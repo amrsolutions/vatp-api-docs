@@ -12,6 +12,7 @@ Connect your ERP system directly to e-taxes.gov.az. Upload invoices, sign electr
 
 [**🚀 Quick Start Guide**](./quickstart.md) &nbsp;&nbsp;&nbsp; [**🤝 I'm a Partner**](./partner-integration.md) &nbsp;&nbsp;&nbsp; [**📞 Get Support**](#support)
 
+
 ---
 
 ## Choose Your Integration Path

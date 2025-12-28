@@ -12,6 +12,7 @@ ERP sisteminizi birbaşa e-taxes.gov.az ilə birləşdirin. Qaimə-fakturaları 
 
 [**🚀 Sürətli Başlanğıc Bələdçisi**](./quickstart.md) &nbsp;&nbsp;&nbsp; [**🤝 Mən Partnerəm**](./partner-integration.md) &nbsp;&nbsp;&nbsp; [**📞 Dəstək Alın**](#dəstək)
 
+
 ---
 
 ## İnteqrasiya Yolunuzu Seçin
