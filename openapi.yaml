@@ -120,32 +120,16 @@ paths:
               required:
                 - invoices
             examples:
-              importOnly:
-                summary: Import without upload
-                value:
-                  username: myusername
-                  password: mypassword
-                  upload: false
-                  invoices:
-                    - id: INV-2025-001
-                      main_info: Test Invoice
-                      seller: "1234567890"
-                      buyer: "0987654321"
-                      sum_subtotal1: 100
-                      sum_subtotal2: 100
-                      sum_total: 100
-                      items:
-                        - id: "PROD-001"
-                          name: Test Product
-                          unit: pcs
-                          unit_price: 100
-                          quantity: 1
-                          barcode: PROD-001000
-                          subtotal1: 100
-                          subtotal2: 100
-                          total: 100
-              standardInvoiceWithVAT:
-                summary: Standard invoice with 18% VAT
+              realWorldMultiItemVAT:
+                summary: "Real-world: Multi-item invoice with 18% VAT & transport tax"
+                description: |
+                  Realistic example based on liquid gas sale with multiple items.
+                  Demonstrates:
+                  - Multiple line items (product + delivery service)
+                  - 18% VAT calculation on all items
+                  - Transport/road tax (sum_ttax)
+                  - Proper contract and invoice references
+                  - Real product codes and barcodes
                 value:
                   username: myusername
                   password: mypassword
@@ -153,51 +137,276 @@ paths:
                   use_old_sys: false
                   invoices:
                     - id: "2024030110400001"
-                      main_info: "Contract A001; 08.01.2024"
+                      main_info: "Müqavilə A001; 08.01.2024"
+                      add_info: "Qaimə XYZ 251145; 28.02.2024"
                       seller: "1111111111"
                       buyer: "0000000000"
-                      sum_subtotal1: 118
-                      sum_subtotal2: 118
-                      sum_apply_vat_amount: 118
-                      sum_vat_amount: 21.24
-                      sum_total: 139.24
+                      sum_subtotal1: 428.34
+                      sum_aksiz: 0
+                      sum_subtotal2: 428.34
+                      sum_apply_vat_amount: 428.34
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 77.10
+                      sum_ttax: 14.56
+                      sum_total: 520.00
                       items:
-                        - id: "0000000001"
-                          name: Product Name
-                          unit: pcs
-                          unit_price: 118
+                        - id: "9947008540"
+                          name: "Maye qaz (texniki butan)"
+                          unit: "ton"
+                          unit_price: 0.400
+                          quantity: 816.61020
+                          barcode: "9947008540000"
+                          subtotal1: 326.6441
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 326.6441
+                          apply_vat_amount: 326.6441
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 58.7959
+                          transport_tax: 14.56
+                          total: 400.0000
+                        - id: "9947008540"
+                          name: "Daşınma xərci"
+                          unit: "xidmət"
+                          unit_price: 0.400
+                          quantity: 254.24
+                          barcode: "9947008540000"
+                          subtotal1: 101.6960
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 101.6960
+                          apply_vat_amount: 101.6960
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 18.3053
+                          transport_tax: 0
+                          total: 120.0013
+
+              advanceInvoice:
+                summary: "Advance payment invoice (Avans qaiməsi)"
+                description: |
+                  Example of advance payment invoice (type: "avans").
+                  Used when customer makes advance payment before goods/services delivery.
+                  Demonstrates:
+                  - Invoice type: "avans"
+                  - Multi-item advance payment
+                  - 18% VAT on advance amount
+                  - This qaime can be referenced later by main invoice using main_qaime field
+                value:
+                  username: myusername
+                  password: mypassword
+                  upload: true
+                  use_old_sys: false
+                  invoices:
+                    - id: "2025010115500001"
+                      type: "avans"
+                      main_info: "Müqavilə B-2025/105; Avans ödənişi"
+                      add_info: "50% əvvəlcədən ödəniş"
+                      seller: "1111111111"
+                      buyer: "2222222222"
+                      sum_subtotal1: 5000.00
+                      sum_aksiz: 0
+                      sum_subtotal2: 5000.00
+                      sum_apply_vat_amount: 5000.00
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 900.00
+                      sum_ttax: 0
+                      sum_total: 5900.00
+                      items:
+                        - id: "1234567890"
+                          name: "Kompüter avadanlıqları (avans)"
+                          unit: "dəst"
+                          unit_price: 2500.00
+                          quantity: 2
+                          barcode: "1234567890000"
+                          subtotal1: 5000.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 5000.00
+                          apply_vat_amount: 5000.00
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 900.00
+                          transport_tax: 0
+                          total: 5900.00
+
+              invoiceBasedOnAdvance:
+                summary: "Invoice based on previous advance payment"
+                description: |
+                  Final invoice that references a previous advance payment.
+                  Demonstrates:
+                  - main_qaime field referencing advance invoice
+                  - When main_qaime is provided and valid, most other fields can be empty
+                  - Portal automatically retrieves data from the advance invoice
+                  - Customer pays remaining amount (total - advance already paid)
+                value:
+                  username: myusername
+                  password: mypassword
+                  upload: true
+                  use_old_sys: false
+                  invoices:
+                    - id: "2025012015600001"
+                      main_qaime: "AA24070000000"
+                      main_info: "Malların çatdırılması (avansa əsasən)"
+                      seller: "1111111111"
+                      buyer: "2222222222"
+
+              simplifiedTaxationDetailed:
+                summary: "Simplified taxation - Multi-item service invoice"
+                description: |
+                  Invoice for companies using simplified taxation (no VAT).
+                  Demonstrates:
+                  - Multiple service items
+                  - No VAT fields (all zero or omitted)
+                  - Contract references
+                  - Service-based business model
+                value:
+                  username: myusername
+                  password: mypassword
+                  upload: true
+                  use_old_sys: false
+                  invoices:
+                    - id: "2024030110400002"
+                      main_info: "Müqavilə A001; 08.01.2024"
+                      add_info: "Qaimə XYZ 251145; 28.02.2024"
+                      seller: "3333333333"
+                      buyer: "0000000000"
+                      sum_subtotal1: 450.00
+                      sum_aksiz: 0
+                      sum_subtotal2: 450.00
+                      sum_apply_vat_amount: 0
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 0
+                      sum_ttax: 0
+                      sum_total: 450.00
+                      items:
+                        - id: "9965111040"
+                          name: "Texniki xidmət № QH2222219499/9"
+                          unit: "ədəd"
+                          unit_price: 250.00
                           quantity: 1
-                          barcode: "0000000001000"
-                          subtotal1: 118
-                          subtotal2: 118
-                          apply_vat_amount: 118
-                          vat_amount: 21.24
-                          total: 139.24
+                          barcode: "9965111040000"
+                          subtotal1: 250.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 250.00
+                          apply_vat_amount: 0
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 0
+                          transport_tax: 0
+                          total: 250.00
+                        - id: "9965111041"
+                          name: "Konsultasiya xidməti № QH1234535788/1"
+                          unit: "saat"
+                          unit_price: 50.00
+                          quantity: 4
+                          barcode: "9965111041000"
+                          subtotal1: 200.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 200.00
+                          apply_vat_amount: 0
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 0
+                          transport_tax: 0
+                          total: 200.00
+
               partnerRequest:
-                summary: Partner request with phone parameter
+                summary: "Partner integration - Multi-item invoice"
+                description: |
+                  Partner managing invoice for their customer.
+                  Demonstrates:
+                  - phone parameter for partner authentication
+                  - Multiple items
+                  - Standard VAT calculation
+                  - Partner business model
                 value:
                   username: partner_username
                   password: partner_password
                   phone: "994501234567"
                   upload: true
                   invoices:
-                    - id: INV-2025-001
-                      main_info: Invoice for customer
-                      seller: "1234567890"
-                      buyer: "0987654321"
-                      sum_subtotal1: 100
-                      sum_subtotal2: 100
-                      sum_total: 100
+                    - id: "PTR-2025-001-0045"
+                      main_info: "Müştəri sifarişi #0045"
+                      add_info: "Partner vasitəsilə"
+                      seller: "4444444444"
+                      buyer: "5555555555"
+                      sum_subtotal1: 1500.00
+                      sum_aksiz: 0
+                      sum_subtotal2: 1500.00
+                      sum_apply_vat_amount: 1500.00
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 270.00
+                      sum_ttax: 0
+                      sum_total: 1770.00
                       items:
-                        - id: "PROD-001"
-                          name: Test Product
-                          unit: pcs
-                          unit_price: 100
+                        - id: "8888888001"
+                          name: "Notebook Lenovo ThinkPad"
+                          unit: "ədəd"
+                          unit_price: 800.00
                           quantity: 1
-                          barcode: PROD-001000
-                          subtotal1: 100
-                          subtotal2: 100
-                          total: 100
+                          barcode: "8888888001000"
+                          subtotal1: 800.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 800.00
+                          apply_vat_amount: 800.00
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 144.00
+                          transport_tax: 0
+                          total: 944.00
+                        - id: "8888888002"
+                          name: "Simsiz siçan Logitech"
+                          unit: "ədəd"
+                          unit_price: 35.00
+                          quantity: 2
+                          barcode: "8888888002000"
+                          subtotal1: 70.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 70.00
+                          apply_vat_amount: 70.00
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 12.60
+                          transport_tax: 0
+                          total: 82.60
+                        - id: "8888888003"
+                          name: "USB flash 64GB"
+                          unit: "ədəd"
+                          unit_price: 15.00
+                          quantity: 42
+                          barcode: "8888888003000"
+                          subtotal1: 630.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 630.00
+                          apply_vat_amount: 630.00
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 113.40
+                          transport_tax: 0
+                          total: 743.40
       responses:
         '200':
           description: Success - Returns process ID for monitoring
