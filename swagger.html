@@ -3,118 +3,425 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VatPortal API - Interactive Documentation</title>
+    <title>VatPortal API Documentation</title>
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
 
+        /* Hide default Swagger topbar and servers section */
         .swagger-ui .topbar {
             display: none;
         }
 
+        .swagger-ui .servers {
+            display: none;
+        }
+
+        /* Custom header */
         #custom-header {
-            background-color: #1b1b1b;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            padding: 20px;
-            border-bottom: 3px solid #4CAF50;
+            padding: 2rem 2rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo {
+            font-size: 2.5rem;
         }
 
         #custom-header h1 {
-            margin: 0 0 10px 0;
-            color: white;
-        }
-
-        #custom-header p {
             margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        #custom-header .subtitle {
+            margin: 0.5rem 0 0 3.5rem;
             opacity: 0.9;
+            font-size: 1rem;
+            font-weight: 400;
         }
 
-        #subdomain-config {
-            background-color: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 5px;
-            padding: 20px;
-            margin: 20px;
+        /* Compact server config bar */
+        #server-bar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid #e5e7eb;
         }
 
-        #subdomain-config h3 {
-            margin-top: 0;
-            color: #856404;
+        .server-bar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
 
-        #subdomain-config input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 300px;
-            margin-right: 10px;
+        .server-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            white-space: nowrap;
         }
 
-        #subdomain-config button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
+        .server-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+
+        #subdomain-input {
+            flex: 1;
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+
+        #subdomain-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #update-btn {
+            padding: 0.625rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
 
-        #subdomain-config button:hover {
-            background-color: #45a049;
+        #update-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        .subdomain-info {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #856404;
+        #update-btn:active {
+            transform: translateY(0);
         }
 
-        .current-server {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #d1ecf1;
-            border: 1px solid #bee5eb;
-            border-radius: 4px;
-            color: #0c5460;
-            font-weight: bold;
+        .current-server-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: #166534;
+            font-weight: 500;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Info panel - collapsible */
+        #info-panel {
+            background: white;
+            margin: 0;
+            border-bottom: 1px solid #e5e7eb;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+        }
+
+        #info-panel.expanded {
+            max-height: 300px;
+        }
+
+        .info-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .info-card h4 {
+            margin: 0 0 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .info-card ul {
+            margin: 0;
+            padding-left: 1.25rem;
+            font-size: 0.8125rem;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .toggle-info {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            margin-left: auto;
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-weight: 500;
+        }
+
+        .toggle-info:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main content wrapper */
+        #swagger-wrapper {
+            background: white;
+            min-height: calc(100vh - 200px);
+        }
+
+        #swagger-ui {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Swagger UI customizations */
+        .swagger-ui .info {
+            margin: 0 0 2rem;
+        }
+
+        .swagger-ui .info .title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .swagger-ui .scheme-container {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        /* Improve opblock styling */
+        .swagger-ui .opblock {
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .swagger-ui .opblock .opblock-summary {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .swagger-ui .opblock.opblock-post {
+            border-color: #10b981;
+        }
+
+        .swagger-ui .opblock.opblock-get {
+            border-color: #3b82f6;
+        }
+
+        .swagger-ui .opblock.opblock-delete {
+            border-color: #ef4444;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: #1f2937;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(150%);
+            transition: transform 0.3s ease-out;
+            z-index: 10000;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #custom-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .server-bar-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .server-input-group {
+                max-width: 100%;
+            }
+
+            .current-server-badge {
+                justify-content: center;
+            }
+
+            #swagger-ui {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <div id="custom-header">
-        <h1>🚀 VatPortal API - Interactive Documentation</h1>
-        <p>Test all API endpoints with your company subdomain and credentials</p>
-    </div>
-
-    <div id="subdomain-config">
-        <h3>🔧 Configure Your Company Subdomain</h3>
-        <p>Enter your company or partner subdomain to customize the API server URL:</p>
-        <div style="margin-top: 15px;">
-            <input
-                type="text"
-                id="subdomain-input"
-                placeholder="Enter subdomain (e.g., mycompany)"
-                value="demo"
-            />
-            <button onclick="updateSubdomain()">Update Server</button>
-        </div>
-        <div class="subdomain-info">
-            <strong>💡 Examples:</strong><br>
-            • Enterprise customers: Use your company subdomain (e.g., "mycompany")<br>
-            • Partners: Use your partner account subdomain (e.g., "partnername")<br>
-            • Testing: Use "demo" for testing
-        </div>
-        <div class="current-server" id="current-server-display">
-            Current Server: <strong>https://demo.vatportal.az/api</strong>
+        <div class="header-content">
+            <div class="header-top">
+                <span class="logo">🚀</span>
+                <div>
+                    <h1>VatPortal API Documentation</h1>
+                    <p class="subtitle">Interactive API testing for Azerbaijan e-taxes.gov.az integration</p>
+                </div>
+                <button class="toggle-info" onclick="toggleInfo()">ℹ️ Quick Guide</button>
+            </div>
         </div>
     </div>
 
-    <div id="swagger-ui"></div>
+    <!-- Collapsible Info Panel -->
+    <div id="info-panel">
+        <div class="info-content">
+            <div class="info-card">
+                <h4>🏢 Enterprise Customers</h4>
+                <ul>
+                    <li>Use your company subdomain</li>
+                    <li>Example: <code>mycompany</code></li>
+                    <li>No phone parameter needed</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h4>🤝 Partners</h4>
+                <ul>
+                    <li>Use partner subdomain</li>
+                    <li>Include phone in all requests</li>
+                    <li>Format: 994XXXXXXXXX</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h4>🔐 Authentication</h4>
+                <ul>
+                    <li>Username/Password in body</li>
+                    <li>Or use x-vatpapikey header</li>
+                    <li>Click "Authorize" button below</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h4>🧪 Testing</h4>
+                <ul>
+                    <li>Use "demo" for testing</li>
+                    <li>Try example requests</li>
+                    <li>Check response codes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compact Server Configuration Bar -->
+    <div id="server-bar">
+        <div class="server-bar-content">
+            <span class="server-label">🌐 API Server:</span>
+            <div class="server-input-group">
+                <input
+                    type="text"
+                    id="subdomain-input"
+                    placeholder="Enter subdomain (e.g., mycompany)"
+                    value="demo"
+                    autocomplete="off"
+                />
+                <button id="update-btn" onclick="updateSubdomain()">
+                    Apply
+                </button>
+            </div>
+            <div class="current-server-badge">
+                <span class="status-dot"></span>
+                <span id="current-server-display">https://demo.vatportal.az/api</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swagger UI Container -->
+    <div id="swagger-wrapper">
+        <div id="swagger-ui"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
 
     <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-bundle.js"></script>
     <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-standalone-preset.js"></script>
@@ -124,39 +431,62 @@
 
         // Update input field with saved value
         document.getElementById('subdomain-input').value = currentSubdomain;
-        document.getElementById('current-server-display').innerHTML =
-            `Current Server: <strong>https://${currentSubdomain}.vatportal.az/api</strong>`;
+        document.getElementById('current-server-display').textContent =
+            `https://${currentSubdomain}.vatportal.az/api`;
 
-        // Initialize Swagger UI
-        const ui = SwaggerUIBundle({
-            url: './openapi.yaml',
-            dom_id: '#swagger-ui',
-            deepLinking: true,
-            presets: [
-                SwaggerUIBundle.presets.apis,
-                SwaggerUIStandalonePreset
-            ],
-            plugins: [
-                SwaggerUIBundle.plugins.DownloadUrl
-            ],
-            layout: "StandaloneLayout"
-        });
+        // Initialize Swagger UI with dynamic server
+        function initSwagger() {
+            const ui = SwaggerUIBundle({
+                url: './openapi.yaml',
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                // Override the server URL dynamically
+                onComplete: function() {
+                    // Update servers after Swagger loads
+                    const subdomain = localStorage.getItem('vatportal_subdomain') || 'demo';
+                    if (window.ui && window.ui.specActions) {
+                        window.ui.specActions.updateUrl(`https://${subdomain}.vatportal.az/api`);
+                    }
+                }
+            });
 
-        window.ui = ui;
+            window.ui = ui;
+        }
 
-        // Function to update subdomain
+        // Initialize on load
+        initSwagger();
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast show ${type}`;
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 3000);
+        }
+
+        // Update subdomain
         function updateSubdomain() {
             const input = document.getElementById('subdomain-input');
-            const subdomain = input.value.trim();
+            const subdomain = input.value.trim().toLowerCase();
 
             if (!subdomain) {
-                alert('Please enter a subdomain');
+                showToast('Please enter a subdomain', 'error');
                 return;
             }
 
             // Validate subdomain format
-            if (!/^[a-z0-9-]+$/i.test(subdomain)) {
-                alert('Invalid subdomain format. Use only letters, numbers, and hyphens.');
+            if (!/^[a-z0-9-]+$/.test(subdomain)) {
+                showToast('Invalid format. Use only letters, numbers, and hyphens.', 'error');
                 return;
             }
 
@@ -165,12 +495,20 @@
             currentSubdomain = subdomain;
 
             // Update display
-            document.getElementById('current-server-display').innerHTML =
-                `Current Server: <strong>https://${subdomain}.vatportal.az/api</strong>`;
+            document.getElementById('current-server-display').textContent =
+                `https://${subdomain}.vatportal.az/api`;
 
-            // Reload the page to apply new subdomain
-            alert(`Server will be updated to: https://${subdomain}.vatportal.az/api\n\nPage will reload to apply changes.`);
-            location.reload();
+            // Show success toast and reload
+            showToast(`Switching to ${subdomain}.vatportal.az...`, 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        }
+
+        // Toggle info panel
+        function toggleInfo() {
+            const panel = document.getElementById('info-panel');
+            panel.classList.toggle('expanded');
         }
 
         // Allow Enter key to submit
@@ -179,6 +517,14 @@
                 updateSubdomain();
             }
         });
+
+        // Auto-collapse info panel after 10 seconds
+        setTimeout(() => {
+            const panel = document.getElementById('info-panel');
+            if (panel.classList.contains('expanded')) {
+                panel.classList.remove('expanded');
+            }
+        }, 10000);
     </script>
 </body>
 </html>
