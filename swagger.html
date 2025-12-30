@@ -246,20 +246,76 @@
 
         /* Swagger UI customizations */
         .swagger-ui .info {
-            margin: 0 0 2rem;
+            margin: 0 0 1rem;
         }
 
         .swagger-ui .info .title {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #1e293b;
         }
 
+        /* Hide the long description by default */
+        .swagger-ui .info .description {
+            display: none;
+        }
+
+        .swagger-ui .info .description.expanded {
+            display: block;
+        }
+
+        /* Add a toggle button */
+        .description-toggle {
+            display: inline-block;
+            margin: 0.5rem 0 1rem;
+            padding: 0.5rem 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .description-toggle:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+        }
+
+        .description-toggle:active {
+            transform: translateY(0);
+        }
+
         .swagger-ui .scheme-container {
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 8px;
+            display: none !important;
+        }
+
+        /* Keep authorize button visible and styled */
+        .swagger-ui .auth-wrapper {
+            display: flex !important;
+            justify-content: flex-end;
             margin: 1rem 0;
+        }
+
+        .swagger-ui .btn.authorize {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            border: none !important;
+            color: white !important;
+            padding: 0.625rem 1.5rem !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+        }
+
+        .swagger-ui .btn.authorize:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+        }
+
+        .swagger-ui .btn.authorize svg {
+            fill: white !important;
         }
 
         /* Improve opblock styling */
@@ -455,6 +511,30 @@
                     if (window.ui && window.ui.specActions) {
                         window.ui.specActions.updateUrl(`https://${subdomain}.vatportal.az/api`);
                     }
+
+                    // Add toggle button for API description
+                    setTimeout(() => {
+                        const infoSection = document.querySelector('.swagger-ui .info');
+                        const descriptionDiv = document.querySelector('.swagger-ui .info .description');
+
+                        if (infoSection && descriptionDiv && !document.querySelector('.description-toggle')) {
+                            const toggleBtn = document.createElement('button');
+                            toggleBtn.className = 'description-toggle';
+                            toggleBtn.textContent = '📖 Show API Details';
+                            toggleBtn.onclick = function() {
+                                descriptionDiv.classList.toggle('expanded');
+                                toggleBtn.textContent = descriptionDiv.classList.contains('expanded')
+                                    ? '📖 Hide API Details'
+                                    : '📖 Show API Details';
+                            };
+
+                            // Insert button after title, before description
+                            const titleElement = infoSection.querySelector('.title');
+                            if (titleElement) {
+                                titleElement.parentNode.insertBefore(toggleBtn, descriptionDiv);
+                            }
+                        }
+                    }, 500);
                 }
             });
 
