@@ -327,28 +327,36 @@ async function uploadInvoice() {
 
 // Step 2: Poll for completion
 async function waitForCompletion(processId) {
-  const maxAttempts = 60; // 5 minutes max
-  const pollInterval = 5000; // 5 seconds
-  
-  for (let i = 0; i < maxAttempts; i++) {
+  let interval = 2000; // Start at 2 seconds
+  const startTime = Date.now();
+  let attempt = 0;
+
+  while (true) {
+    attempt++;
     const status = await checkStatus(processId);
-    
+
     if (status.status === 2) {
       return { success: true, status };
     }
-    
+
     if (status.status === 3) {
-      return { 
-        success: false, 
-        error: status.stats.etx_exception 
+      return {
+        success: false,
+        error: status.stats.etx_exception
       };
     }
-    
-    // Still processing
-    await sleep(pollInterval);
+
+    // Adjust interval based on elapsed time (progressive polling)
+    const elapsedTime = Date.now() - startTime;
+    if (elapsedTime > 120000) {
+      interval = 10000; // After 2 minutes, slow to 10 seconds
+    } else if (elapsedTime > 60000) {
+      interval = 5000; // After 1 minute, slow to 5 seconds
+    }
+
+    console.log(`⏳ Attempt ${attempt} - Polling again in ${interval/1000}s...`);
+    await sleep(interval);
   }
-  
-  throw new Error('Timeout waiting for completion');
 }
 
 async function checkStatus(processId) {

@@ -196,28 +196,36 @@ async function uploadInvoice() {
 
 // Addım 2: Tamamlanma üçün sorğu göndərin
 async function waitForCompletion(processId) {
-  const maxAttempts = 60; // Maksimum 5 dəqiqə
-  const pollInterval = 5000; // 5 saniyə
-  
-  for (let i = 0; i < maxAttempts; i++) {
+  let interval = 2000; // 2 saniyə ilə başlayın
+  const startTime = Date.now();
+  let attempt = 0;
+
+  while (true) {
+    attempt++;
     const status = await checkStatus(processId);
-    
+
     if (status.status === 2) {
       return { success: true, status };
     }
-    
+
     if (status.status === 3) {
-      return { 
-        success: false, 
-        error: status.stats.etx_exception 
+      return {
+        success: false,
+        error: status.stats.etx_exception
       };
     }
-    
-    // Hələ emal edilir
-    await sleep(pollInterval);
+
+    // Keçmiş vaxta əsasən intervalı tənzimləyin (proqressiv sorğulama)
+    const elapsedTime = Date.now() - startTime;
+    if (elapsedTime > 120000) {
+      interval = 10000; // 2 dəqiqədən sonra, 10 saniyəyə yavaşladın
+    } else if (elapsedTime > 60000) {
+      interval = 5000; // 1 dəqiqədən sonra, 5 saniyəyə yavaşladın
+    }
+
+    console.log(`⏳ Cəhd ${attempt} - ${interval/1000}s-də yenidən sorğu...`);
+    await sleep(interval);
   }
-  
-  throw new Error('Tamamlanma gözləməsi üçün vaxt bitdi');
 }
 
 async function checkStatus(processId) {

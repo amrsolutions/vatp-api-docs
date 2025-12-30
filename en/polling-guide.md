@@ -42,12 +42,15 @@ Use this `id` to poll for status updates.
 **Most VatPortal operations take 3-5 minutes to complete.** Using progressive intervals (starting fast, then slowing down) provides the best balance between responsiveness and server efficiency:
 
 ```javascript
-async function pollProcessStatus(procId, maxAttempts = 120) {
+async function pollProcessStatus(procId) {
   let interval = 2000; // Start at 2 seconds for responsiveness
   const maxInterval = 10000; // Cap at 10 seconds
   const startTime = Date.now();
+  let attempt = 0;
 
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  while (true) {
+    attempt++;
+
     const response = await fetch('https://company.vatportal.az/api/job/read_proc_status', {
       method: 'GET',
       headers: {
@@ -82,12 +85,9 @@ async function pollProcessStatus(procId, maxAttempts = 120) {
     }
     // First minute: keep at 2 seconds
 
-    console.log(`⏳ Attempt ${attempt}/${maxAttempts} - Next poll in ${interval/1000}s...`);
+    console.log(`⏳ Attempt ${attempt} - Status: ${data.data.status_desc} - Next poll in ${interval/1000}s...`);
     await new Promise(resolve => setTimeout(resolve, interval));
   }
-
-  // Timeout reached
-  throw new Error('Polling timeout: Process did not complete in time');
 }
 ```
 
@@ -391,7 +391,7 @@ function sleep(ms) {
 - **Use progressive or exponential backoff** - Essential for 3-5 minute operations to reduce server load
 - **Start with 2-second intervals** - Provides good responsiveness initially
 - **Slow down after 1-2 minutes** - Most operations are still running, reduce polling frequency
-- **Set reasonable timeouts** - 5-10 minutes for most operations (120 max attempts with progressive intervals)
+- **Poll until completion** - Continue polling until status is 2 (success) or 3 (error), the process will always finish
 - **Monitor terminal states** (status 2 or 3) to stop polling
 - **Handle errors gracefully** - check `etx_exception` field for e-taxes errors
 - **Notify users** when PIN codes are required

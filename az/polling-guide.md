@@ -42,12 +42,15 @@ Status yeniləmələri üçün poll etmək üçün bu `id`-dən istifadə edin.
 **Əksər VatPortal əməliyyatları 3-5 dəqiqə çəkir.** Proqressiv intervallardan istifadə (sürətli başlayıb, sonra yavaşlamaq) cavabdehlik və server effektivliyi arasında ən yaxşı tarazlığı təmin edir:
 
 ```javascript
-async function pollProcessStatus(procId, maxAttempts = 120) {
+async function pollProcessStatus(procId) {
   let interval = 2000; // Cavabdehlik üçün 2 saniyə ilə başlayın
   const maxInterval = 10000; // 10 saniyədə məhdudlaşdırın
   const startTime = Date.now();
+  let attempt = 0;
 
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  while (true) {
+    attempt++;
+
     const response = await fetch('https://company.vatportal.az/api/job/read_proc_status', {
       method: 'GET',
       headers: {
@@ -82,12 +85,9 @@ async function pollProcessStatus(procId, maxAttempts = 120) {
     }
     // İlk dəqiqə: 2 saniyədə saxlayın
 
-    console.log(`⏳ Cəhd ${attempt}/${maxAttempts} - Növbəti poll ${interval/1000}s-də...`);
+    console.log(`⏳ Cəhd ${attempt} - Status: ${data.data.status_desc} - Növbəti poll ${interval/1000}s-də...`);
     await new Promise(resolve => setTimeout(resolve, interval));
   }
-
-  // Vaxt bitdi
-  throw new Error('Polling vaxt bitməsi: Proses vaxtında tamamlanmadı');
 }
 ```
 
@@ -360,21 +360,30 @@ async function uploadInvoicesWithPolling(invoices) {
 }
 
 // Tamamlanana qədər poll etmək üçün köməkçi funksiya
-async function pollUntilComplete(procId, maxAttempts = 60) {
+async function pollUntilComplete(procId) {
   let interval = 2000; // 2 saniyə
+  const startTime = Date.now();
+  let attempt = 0;
 
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  while (true) {
+    attempt++;
     const response = await checkProcessStatus(procId);
 
     if (response.data.status === 2 || response.data.status === 3) {
       return response.data;
     }
 
-    console.log(`⏳ Cəhd ${attempt}/${maxAttempts}...`);
+    // Keçmiş vaxta əsasən intervalı tənzimləyin
+    const elapsedTime = Date.now() - startTime;
+    if (elapsedTime > 120000) {
+      interval = 10000;
+    } else if (elapsedTime > 60000) {
+      interval = 5000;
+    }
+
+    console.log(`⏳ Cəhd ${attempt} - Status: ${response.data.status_desc} - Növbəti poll ${interval/1000}s-də...`);
     await sleep(interval);
   }
-
-  throw new Error('Polling vaxt bitməsi');
 }
 
 function sleep(ms) {
@@ -391,7 +400,7 @@ function sleep(ms) {
 - 3-5 dəqiqəlik əməliyyatlar üçün server yükünü azaltmaq üçün **proqressiv və ya eksponensial geri çəkilmədən istifadə edin** - vacibdir
 - İlkin cavabdehlik üçün **2 saniyəlik intervallarla başlayın**
 - **1-2 dəqiqədən sonra yavaşlayın** - Əksər əməliyyatlar hələ də işləyir, poll tezliyini azaldın
-- **Ağlabatan vaxt məhdudiyyətləri təyin edin** - Əksər əməliyyatlar üçün 5-10 dəqiqə (proqressiv intervallarla 120 maks cəhd)
+- **Tamamlanana qədər poll edin** - Proses 2 (uğur) və ya 3 (xəta) statusuna çatana qədər poll etməyə davam edin, proses həmişə tamamlanacaq
 - Poll etməyi dayandırmaq üçün **terminal vəziyyətləri izləyin** (status 2 və ya 3)
 - **Xətaları qeyri-adi şəkildə idarə edin** - e-taxes xətaları üçün `etx_exception` sahəsini yoxlayın
 - PIN kodları tələb olunduqda **istifadəçilərə bildiriş göndərin**
@@ -402,7 +411,6 @@ function sleep(ms) {
 
 - **Uzun əməliyyatlar üçün sabit intervallardan istifadə etməyin** - 3-5 dəqiqəlik proseslər üçün lazımsız yük yaradır
 - **1 saniyədən sürətli poll etməyin** - Minimum interval 1 saniyə olmalıdır
-- **Qeyri-müəyyən müddətə poll etməyin** - Həmişə maksimum cəhd limiti təyin edin
 - **Status kodlarını nəzərə almayın** - Həm `status`, həm də `err_code` yoxlayın
 - **Xəta idarəetməsini atlayın** - Proses status 3 (xətalar) ilə tamamlana bilər
 - **Tamamlandıqdan sonra poll etməyin** - Status 2 və ya 3 olduqda dayandırın
