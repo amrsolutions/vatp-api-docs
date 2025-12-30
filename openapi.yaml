@@ -407,6 +407,197 @@ paths:
                           vat_amount: 113.40
                           transport_tax: 0
                           total: 743.40
+
+              goodsTransferBetweenWarehouses:
+                summary: "Goods transfer between warehouses (Malların köçürülməsi)"
+                description: |
+                  Invoice for transferring goods between company's own warehouses.
+                  Demonstrates:
+                  - Invoice type: "goodsTransfer"
+                  - from_wh (source warehouse)
+                  - to_wh (destination warehouse)
+                  - wh_field (warehouse lookup method: 1=by code, 2=by name)
+                  - transp_reg_number (transport registration)
+                  - No sale transaction, just internal movement
+                  - Usually no VAT on internal transfers
+                value:
+                  username: myusername
+                  password: mypassword
+                  upload: true
+                  use_old_sys: false
+                  invoices:
+                    - id: "2025011816700001"
+                      type: "goodsTransfer"
+                      main_info: "Anbar arası mal köçürülməsi"
+                      add_info: "Bakı anbarından Gəncə anbarına"
+                      seller: "1111111111"
+                      buyer: "1111111111"
+                      transp_reg_number: "10-AA-123"
+                      from_wh: "WH001"
+                      to_wh: "WH002"
+                      wh_field: 1
+                      sum_subtotal1: 8500.00
+                      sum_aksiz: 0
+                      sum_subtotal2: 8500.00
+                      sum_apply_vat_amount: 0
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 0
+                      sum_ttax: 0
+                      sum_total: 8500.00
+                      items:
+                        - id: "7777777001"
+                          name: "Plastik qablaşdırma materialı"
+                          unit: "rulon"
+                          unit_price: 50.00
+                          quantity: 100
+                          barcode: "7777777001000"
+                          subtotal1: 5000.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 5000.00
+                          apply_vat_amount: 0
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 0
+                          transport_tax: 0
+                          total: 5000.00
+                        - id: "7777777002"
+                          name: "Karton qutular (50x50x50)"
+                          unit: "ədəd"
+                          unit_price: 7.00
+                          quantity: 500
+                          barcode: "7777777002000"
+                          subtotal1: 3500.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 3500.00
+                          apply_vat_amount: 0
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 0
+                          transport_tax: 0
+                          total: 3500.00
+
+              invoiceWithExcise:
+                summary: "Invoice with excise tax (Aksizli mallar)"
+                description: |
+                  Invoice for goods subject to excise tax (alcohol, tobacco, fuel, etc.).
+                  Demonstrates:
+                  - sum_aksiz (total excise amount)
+                  - Item-level: aksiz, aksizgrade (excise amount and rate)
+                  - Excise is calculated before VAT
+                  - Common for: alcoholic beverages, tobacco products, petroleum products
+                  - Formula: subtotal1 + aksiz = subtotal2, then VAT applied to subtotal2
+                value:
+                  username: myusername
+                  password: mypassword
+                  upload: true
+                  use_old_sys: false
+                  invoices:
+                    - id: "2025011917800001"
+                      main_info: "Aksizli məhsullar satışı"
+                      add_info: "Müqavilə ALC-2025/015"
+                      seller: "1111111111"
+                      buyer: "6666666666"
+                      sum_subtotal1: 2000.00
+                      sum_aksiz: 800.00
+                      sum_subtotal2: 2800.00
+                      sum_apply_vat_amount: 2800.00
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 504.00
+                      sum_ttax: 0
+                      sum_total: 3304.00
+                      items:
+                        - id: "2208301100"
+                          name: "Viski (40% alkoqol) 0.7L"
+                          unit: "şüşə"
+                          unit_price: 50.00
+                          quantity: 30
+                          barcode: "2208301100000"
+                          subtotal1: 1500.00
+                          aksiz: 600.00
+                          aksizgrade: 40
+                          subtotal2: 2100.00
+                          apply_vat_amount: 2100.00
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 378.00
+                          transport_tax: 0
+                          total: 2478.00
+                        - id: "2402201000"
+                          name: "Siqaret (filter) 20 ədəd qab"
+                          unit: "blok"
+                          unit_price: 25.00
+                          quantity: 20
+                          barcode: "2402201000000"
+                          subtotal1: 500.00
+                          aksiz: 200.00
+                          aksizgrade: 40
+                          subtotal2: 700.00
+                          apply_vat_amount: 700.00
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 126.00
+                          transport_tax: 0
+                          total: 826.00
+
+              tokenAuthentication:
+                summary: "Token-based authentication (x-vatpapikey header)"
+                description: |
+                  Using API token instead of username/password in request body.
+                  Demonstrates:
+                  - x-vatpapikey HTTP header for authentication
+                  - No username/password in JSON body
+                  - More secure for production integrations
+                  - Token obtained from: Portal → Profile → Access to API
+                  - Token can be renewed using /auth/reset_start and /auth/reset_confirm endpoints
+
+                  Note: In Swagger UI, add the token in the "Authorize" button or manually add the header.
+                value:
+                  upload: true
+                  use_old_sys: false
+                  invoices:
+                    - id: "2025012018900001"
+                      main_info: "Avtomatlaşdırılmış inteqrasiya"
+                      add_info: "Token ilə autentifikasiya"
+                      seller: "1111111111"
+                      buyer: "7777777777"
+                      sum_subtotal1: 350.00
+                      sum_aksiz: 0
+                      sum_subtotal2: 350.00
+                      sum_apply_vat_amount: 350.00
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 63.00
+                      sum_ttax: 0
+                      sum_total: 413.00
+                      items:
+                        - id: "5555555001"
+                          name: "Proqram təminatı lisenziyası"
+                          unit: "ədəd"
+                          unit_price: 350.00
+                          quantity: 1
+                          barcode: "5555555001000"
+                          subtotal1: 350.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 350.00
+                          apply_vat_amount: 350.00
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 63.00
+                          transport_tax: 0
+                          total: 413.00
       responses:
         '200':
           description: Success - Returns process ID for monitoring
