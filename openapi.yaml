@@ -598,6 +598,127 @@ paths:
                           vat_amount: 63.00
                           transport_tax: 0
                           total: 413.00
+
+              batchMultipleInvoices:
+                summary: "Batch upload - Multiple invoices in single request"
+                description: |
+                  Demonstrates uploading multiple invoices in a single API call.
+                  This is the recommended approach for bulk operations.
+                  Demonstrates:
+                  - Multiple invoices in one request (array of invoices)
+                  - Mix of different invoice types and scenarios
+                  - Efficient batch processing
+                  - All invoices processed together under one process ID
+
+                  Benefits:
+                  - Reduced API calls
+                  - Single process ID to monitor
+                  - Better performance for bulk operations
+                value:
+                  username: myusername
+                  password: mypassword
+                  upload: true
+                  use_old_sys: false
+                  invoices:
+                    - id: "2025012119000001"
+                      main_info: "Müqavilə A-2025/101"
+                      add_info: "Birinci qaimə"
+                      seller: "1111111111"
+                      buyer: "2222222222"
+                      sum_subtotal1: 500.00
+                      sum_aksiz: 0
+                      sum_subtotal2: 500.00
+                      sum_apply_vat_amount: 500.00
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 90.00
+                      sum_ttax: 0
+                      sum_total: 590.00
+                      items:
+                        - id: "1111111001"
+                          name: "Ofis mebeli - masa"
+                          unit: "ədəd"
+                          unit_price: 250.00
+                          quantity: 2
+                          barcode: "1111111001000"
+                          subtotal1: 500.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 500.00
+                          apply_vat_amount: 500.00
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 90.00
+                          transport_tax: 0
+                          total: 590.00
+                    - id: "2025012119000002"
+                      main_info: "Müqavilə B-2025/202"
+                      add_info: "İkinci qaimə"
+                      seller: "1111111111"
+                      buyer: "3333333333"
+                      sum_subtotal1: 1200.00
+                      sum_aksiz: 0
+                      sum_subtotal2: 1200.00
+                      sum_apply_vat_amount: 1200.00
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 216.00
+                      sum_ttax: 0
+                      sum_total: 1416.00
+                      items:
+                        - id: "2222222001"
+                          name: "Printer Canon LBP"
+                          unit: "ədəd"
+                          unit_price: 400.00
+                          quantity: 3
+                          barcode: "2222222001000"
+                          subtotal1: 1200.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 1200.00
+                          apply_vat_amount: 1200.00
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 216.00
+                          transport_tax: 0
+                          total: 1416.00
+                    - id: "2025012119000003"
+                      main_info: "Müqavilə C-2025/303"
+                      add_info: "Üçüncü qaimə - Sadələşdirilmiş"
+                      seller: "4444444444"
+                      buyer: "5555555555"
+                      sum_subtotal1: 300.00
+                      sum_aksiz: 0
+                      sum_subtotal2: 300.00
+                      sum_apply_vat_amount: 0
+                      sum_skip_vat_amount: 0
+                      sum_vat_zero: 0
+                      sum_vat_free: 0
+                      sum_vat_amount: 0
+                      sum_ttax: 0
+                      sum_total: 300.00
+                      items:
+                        - id: "3333333001"
+                          name: "Təmizlik xidməti"
+                          unit: "xidmət"
+                          unit_price: 300.00
+                          quantity: 1
+                          barcode: "3333333001000"
+                          subtotal1: 300.00
+                          aksiz: 0
+                          aksizgrade: 0
+                          subtotal2: 300.00
+                          apply_vat_amount: 0
+                          skip_vat_amount: 0
+                          vat_zero: 0
+                          vat_free: 0
+                          vat_amount: 0
+                          transport_tax: 0
+                          total: 300.00
       responses:
         '200':
           description: Success - Returns process ID for monitoring
